@@ -3,6 +3,10 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
+def One
+    1
+end
+
 class Pattern
 end
 
@@ -50,4 +54,4 @@ end
 def test_invalid_instance line
 end
 
-main
+main if __FILE__ == $PROGRAM_NAME
