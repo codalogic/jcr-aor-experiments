@@ -21,21 +21,21 @@ class Instance
 end
 
 def main
-    Dir.glob( 'jcr-aor*.txt' ) { |fname| process fname }
+    Dir.glob( 'jcr-aor*.txt' ) { |fname| process_file fname }
 end
 
-def process fname
-    File.foreach( fname ) do |line|
-        case line[0]
-            when '?'
-                parse_pattern line
-            when '+'
-                test_valid_instance line
-            when '-'
-                test_invalid_instance line
-            when '#'
-                puts "Comment: ", line
-        end
+def process_file fname
+    File.foreach( fname ) { |line| process_line line }
+end
+
+def process_line line
+    case line[0]
+        when '?'
+            parse_pattern line
+        when '+'
+            test_valid_instance line
+        when '-'
+            test_invalid_instance line
     end
 end
 
@@ -43,8 +43,6 @@ pattern = nil
 
 def parse_pattern line
 end
-
-instance = nil
 
 def test_valid_instance line
     instance = Instance.new line
