@@ -3,20 +3,20 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
-def One
-    1
-end
-
 class Pattern
 end
 
 class Instance
     def initialize line
-        puts "line: ", line
-        @line = line
+        @line = line.strip
+        @is_pass_expected = (@line[0] == '+')
+        @line.gsub! /[^a-z]/, ''
+    end
+    def is_pass_expected
+        @is_pass_expected
     end
     def [] index
-        @line[index]
+        index < @line.size ? @line[index] : ''
     end
 end
 
