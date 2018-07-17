@@ -5,7 +5,7 @@ require 'spec_helper'
 require 'rspec'
 require_relative '../jcr-aor'
 
-describe 'instance class' do
+describe 'Instance class' do
     context 'basic behaviour' do
         instance = nil
         before do
