@@ -1,7 +1,6 @@
 # Copyright (c) 2018, Codalogic Ltd (http://www.codalogic.com)
 # MIT Licensed
 
-require 'spec_helper'
 require 'rspec'
 require_relative '../jcr-aor'
 
