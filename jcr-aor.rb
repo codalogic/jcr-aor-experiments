@@ -3,22 +3,7 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
-class Pattern
-end
-
-class Instance
-    def initialize line
-        @line = line.strip
-        @is_pass_expected = (@line[0] == '+')
-        @line.gsub! /[^a-z]/, ''
-    end
-    def is_pass_expected
-        @is_pass_expected
-    end
-    def [] index
-        index < @line.size ? @line[index] : ''
-    end
-end
+$pattern = nil
 
 def main
     Dir.glob( 'jcr-aor*.txt' ) { |fname| process_file fname }
@@ -39,9 +24,13 @@ def process_line line
     end
 end
 
-pattern = nil
-
 def parse_pattern line
+end
+
+class Pattern
+end
+
+class PatternNode
 end
 
 def test_valid_instance line
@@ -50,6 +39,20 @@ def test_valid_instance line
 end
 
 def test_invalid_instance line
+end
+
+class Instance
+    def initialize line
+        @line = line.strip
+        @is_pass_expected = (@line[0] == '+')
+        @line.gsub! /[^a-z]/, ''
+    end
+    def is_pass_expected
+        @is_pass_expected
+    end
+    def [] index
+        index < @line.size ? @line[index] : ''
+    end
 end
 
 main if __FILE__ == $PROGRAM_NAME
