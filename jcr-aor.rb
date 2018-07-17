@@ -25,9 +25,12 @@ def process_line line
 end
 
 def parse_pattern line
+    $pattern = Pattern.new line
 end
 
 class Pattern
+    def initialize line
+    end
 end
 
 class PatternNode

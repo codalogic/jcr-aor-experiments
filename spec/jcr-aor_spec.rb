@@ -28,3 +28,12 @@ describe 'Instance class' do
         end
     end
 end
+
+describe 'Pattern class' do
+    context 'basic behaviour' do
+        it 'should be created when parse_pattern method called' do
+            parse_pattern "abc"
+            expect( $pattern ).to be_instance_of( Pattern )
+        end
+    end
+end
