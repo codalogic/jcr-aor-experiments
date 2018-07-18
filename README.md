@@ -15,3 +15,23 @@ jcr-aor*.txt files contain the test input and have the following input:
 `-` starts a line the should be *rejected* by the most recent pattern line.
 
 All other lines are ignored.
+
+# The Pattern Format
+
+The pattern line has the following format:
+
+- spaces maybe included in the pattern; they are ignored
+
+- use lower case letters to denote member rule names
+
+- for a simple sequence, do `abc`
+
+- for a choice, use pipe separators: `a|b|c`
+
+- use brackets to surround groups: `ab(c|d)ef`
+
+- use Kleene operators to signify permitted repetition: `a?b*c+`
+
+- use numbers for exact repetitions: `a2bc4`
+
+- use comma separated numbers (or `*` to represent unbounded) in square brackets to denote min~max repetitions range: `a[0,2]b[10,*]`
