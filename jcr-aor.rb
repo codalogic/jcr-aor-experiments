@@ -30,6 +30,22 @@ end
 
 class Pattern
     def initialize line
+        @nodes = []
+        line.each_char { |c| @nodes << (PatternNode.new c) }
+    end
+
+    def size
+        @nodes.size
+    end
+end
+
+class PatternNode
+    def initialize c = nil
+        @is_atomic = c.nil?
+    end
+
+    def is_atomic?
+        @is_atomic
     end
 end
 
