@@ -11,9 +11,10 @@ class Tokeniser
         end
     end
     class Rep
+        @@kleene_min_max_mappings = { '?' => [0, 1], '*' => [0, nil], '+' => [1, nil] }
         attr_reader :min, :max
         def initialize c
-            @min, @max = { '?' => [0, 1], '*' => [0, nil], '+' => [1, nil] }.fetch( c, [1,1] )
+            @min, @max = @@kleene_min_max_mappings.fetch( c, [1,1] )
         end
     end
     class GroupStart end
