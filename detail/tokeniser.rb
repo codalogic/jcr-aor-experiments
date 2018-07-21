@@ -17,6 +17,7 @@ class Tokeniser
             @min, @max = @@kleene_min_max_mappings.fetch( c, [1,1] )
         end
     end
+    class ChoiceSep end
     class GroupStart end
     class GroupEnd end
     class End end
@@ -36,6 +37,9 @@ class Tokeniser
                 r = Rep.new @line[@index]
                 @index += 1
                 r
+            when '|'
+                @index += 1
+                ChoiceSep.new
             when '('
                 @index += 1
                 GroupStart.new
