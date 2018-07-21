@@ -22,7 +22,7 @@ class Tokeniser
     class End end
 
     def initialize line
-        @line = line
+        @line = line.gsub /[^a-z0-9*+?()|]/, ''
         @index = 0
     end
     def next

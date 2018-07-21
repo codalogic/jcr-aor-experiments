@@ -24,6 +24,14 @@ describe 'Tokeniser class' do
         expect( token.c ).to eq( "b" )
     end
 
+    it 'should ignore unwanted character input such as spaces' do
+        tokeniser = Tokeniser.new "a b"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( Tokeniser::Char )
+        expect( token.c ).to eq( "b" )
+    end
+
     it 'should return a GroupStart object for the second entity in "a(c"' do
         tokeniser = Tokeniser.new "a(c"
         token = tokeniser.next
