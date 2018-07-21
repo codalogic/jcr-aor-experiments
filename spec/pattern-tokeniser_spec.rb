@@ -57,36 +57,36 @@ describe 'PatternTokeniser class' do
         expect( token ).to be_instance_of( PT::GroupEnd )
     end
 
-    it 'should return a Rep object for the second entity in "a?"' do
+    it 'should return a Kleene object for the second entity in "a?"' do
         tokeniser = PT.new "a?"
         token = tokeniser.next
         token = tokeniser.next
-        expect( token ).to be_instance_of( PT::Rep )
+        expect( token ).to be_instance_of( PT::Kleene )
     end
 
-    it 'should return a [0,1] Rep object for the second entity in "a?"' do
+    it 'should return a [0,1] Kleene object for the second entity in "a?"' do
         tokeniser = PT.new "a?"
         token = tokeniser.next
         token = tokeniser.next
-        expect( token ).to be_instance_of( PT::Rep )
+        expect( token ).to be_instance_of( PT::Kleene )
         expect( token.min ).to eq( 0 )
         expect( token.max ).to eq( 1 )
     end
 
-    it 'should return a [0,nil] Rep object for the second entity in "a*"' do
+    it 'should return a [0,nil] Kleene object for the second entity in "a*"' do
         tokeniser = PT.new "a*"
         token = tokeniser.next
         token = tokeniser.next
-        expect( token ).to be_instance_of( PT::Rep )
+        expect( token ).to be_instance_of( PT::Kleene )
         expect( token.min ).to eq( 0 )
         expect( token.max ).to eq( nil )
     end
 
-    it 'should return a [1, nil] Rep object for the second entity in "a+"' do
+    it 'should return a [1, nil] Kleene object for the second entity in "a+"' do
         tokeniser = PT.new "a+"
         token = tokeniser.next
         token = tokeniser.next
-        expect( token ).to be_instance_of( PT::Rep )
+        expect( token ).to be_instance_of( PT::Kleene )
         expect( token.min ).to eq( 1 )
         expect( token.max ).to eq( nil )
     end
