@@ -3,7 +3,7 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
-class Tokeniser
+class PatternTokeniser
     class Char
         attr_reader :c
         def initialize c

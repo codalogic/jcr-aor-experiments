@@ -3,7 +3,7 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
-require_relative 'detail/tokeniser'
+require_relative 'detail/pattern-tokeniser'
 
 $pattern = nil
 
