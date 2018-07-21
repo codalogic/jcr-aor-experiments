@@ -37,9 +37,19 @@ describe 'Pattern class' do
             expect( $pattern ).to be_instance_of( Pattern )
         end
 
-        it 'should return the size of base pattern in units of "groupings"' do
+        it 'should return the size of a single character base pattern' do
             parse_pattern "a"
             expect( $pattern.size ).to eq( 1 )
+        end
+
+        it 'should return the size of multiple character base pattern' do
+            parse_pattern "abc"
+            expect( $pattern.size ).to eq( 3 )
+        end
+
+        it 'should return the size of multiple character base pattern with spaces in it' do
+            parse_pattern "a b c"
+            expect( $pattern.size ).to eq( 3 )
         end
 
         #it 'when given an atomic node should say its atomic' do

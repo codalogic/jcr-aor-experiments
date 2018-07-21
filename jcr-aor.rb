@@ -3,6 +3,8 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
+require_relative 'detail/tokeniser'
+
 $pattern = nil
 
 def main
@@ -31,7 +33,7 @@ end
 class Pattern
     def initialize line
         @nodes = []
-        line.each_char { |c| @nodes << (PatternNode.new c) }
+        line.gsub( /[^a-z0-9*+?()|]/, '' ).each_char { |c| @nodes << (PatternNode.new c) }
     end
 
     def size
@@ -40,8 +42,9 @@ class Pattern
 end
 
 class PatternNode
+    # Pass atomic character for an atomic node, or 'nothing' to start group node
     def initialize c = nil
-        @is_atomic = c.nil?
+        @is_atomic = ! c.nil?
     end
 
     def is_atomic?
