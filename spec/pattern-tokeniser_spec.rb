@@ -57,14 +57,6 @@ describe 'PatternTokeniser class' do
         expect( token ).to be_instance_of( PT::GroupEnd )
     end
 
-    it 'should return an End object for the third entity in "ab"' do
-        tokeniser = PT.new "ab"
-        token = tokeniser.next
-        token = tokeniser.next
-        token = tokeniser.next
-        expect( token ).to be_instance_of( PT::End )
-    end
-
     it 'should return a Rep object for the second entity in "a?"' do
         tokeniser = PT.new "a?"
         token = tokeniser.next
@@ -97,5 +89,13 @@ describe 'PatternTokeniser class' do
         expect( token ).to be_instance_of( PT::Rep )
         expect( token.min ).to eq( 1 )
         expect( token.max ).to eq( nil )
+    end
+
+    it 'should return an End object for the third entity in "ab"' do
+        tokeniser = PT.new "ab"
+        token = tokeniser.next
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::End )
     end
 end
