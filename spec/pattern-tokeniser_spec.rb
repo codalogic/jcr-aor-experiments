@@ -91,6 +91,25 @@ describe 'PatternTokeniser class' do
         expect( token.max ).to eq( nil )
     end
 
+    it 'should return a Int object for the second entity in "a23" at end of pattern' do
+        tokeniser = PT.new "a23"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Int )
+        expect( token.value ).to eq( 23 )
+    end
+
+    it 'should return a Int object for the second entity in "a23b" at middle of pattern' do
+        tokeniser = PT.new "a23b"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Int )
+        expect( token.value ).to eq( 23 )
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Char )
+        expect( token.c ).to eq( "b" )
+    end
+
     it 'should return an End object for the third entity in "ab"' do
         tokeniser = PT.new "ab"
         token = tokeniser.next

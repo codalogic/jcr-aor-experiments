@@ -17,6 +17,12 @@ class PatternTokeniser
             @min, @max = @@kleene_min_max_mappings.fetch( c, [1,1] )
         end
     end
+    class Int
+        attr_reader :value
+        def initialize value
+            @value = value
+        end
+    end
     class ChoiceSep end
     class GroupStart end
     class GroupEnd end
@@ -37,6 +43,8 @@ class PatternTokeniser
                 r = Kleene.new @line[@index]
                 @index += 1
                 r
+            when /\d/
+                Int.new parse_integer
             when '|'
                 @index += 1
                 ChoiceSep.new
@@ -47,5 +55,14 @@ class PatternTokeniser
                 @index += 1
                 GroupEnd.new
         end
+    end
+
+    private def parse_integer
+        value = ''
+        while @index < @line.length && @line[@index].match( /\d/ )
+            value += @line[@index]
+            @index += 1
+        end
+        value.to_i
     end
 end
