@@ -65,7 +65,7 @@ class PatternTokeniser
         if @line[@index] == '~'
             max = nil
             @index += 1
-            if @line[@index] && @line[@index].match( /\d/ )
+            if @line[@index] =~ /\d/
                 max = parse_integer
             end
         end
@@ -74,7 +74,7 @@ class PatternTokeniser
 
     private def parse_integer
         value = ''
-        while @index < @line.length && @line[@index].match( /\d/ )
+        while @line[@index] =~ /\d/
             value += @line[@index]
             @index += 1
         end
