@@ -168,4 +168,12 @@ describe 'PatternTokeniser class' do
         token = tokeniser.next
         expect( token ).to be_instance_of( PT::End )
     end
+
+    it 'should return an Error object for unwanted symbols' do
+        tokeniser = PT.new "a&"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Error )
+        expect( token.index ).to eq( 1 )
+    end
 end

@@ -25,6 +25,12 @@ class PatternTokeniser
     class GroupStart end
     class GroupEnd end
     class End end
+    class Error
+        attr_reader :index
+        def initialize index
+            @index = index
+        end
+    end
 
     def initialize line
         @line = line
@@ -53,6 +59,10 @@ class PatternTokeniser
             when ')'
                 @index += 1
                 GroupEnd.new
+            else
+                r = Error.new @index
+                @index += 1
+                r
         end
     end
 
