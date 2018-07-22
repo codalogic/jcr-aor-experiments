@@ -18,11 +18,11 @@ end
 def process_line line
     case line[0]
         when '?'
-            parse_pattern line
+            parse_pattern line[1..-1]
         when '+'
-            test_valid_instance line
+            test_valid_instance line[1..-1]
         when '-'
-            test_invalid_instance line
+            test_invalid_instance line[1..-1]
     end
 end
 
