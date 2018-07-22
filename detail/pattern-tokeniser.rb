@@ -10,7 +10,7 @@ class PatternTokeniser
             @c = c
         end
     end
-    class Kleene
+    class Rep
         @@kleene_min_max_mappings = { '?' => [0, 1], '*' => [0, nil], '+' => [1, nil] }
         attr_reader :min, :max
         def initialize c
@@ -40,7 +40,7 @@ class PatternTokeniser
                 @index += 1
                 r
             when /[?*+]/
-                r = Kleene.new @line[@index]
+                r = Rep.new @line[@index]
                 @index += 1
                 r
             when /\d/
