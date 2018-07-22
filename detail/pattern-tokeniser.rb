@@ -27,10 +27,11 @@ class PatternTokeniser
     class End end
 
     def initialize line
-        @line = line.gsub /[^a-z*+?0-9~()|]/, ''
+        @line = line
         @index = 0
     end
     def next
+        skip_ws
         return End.new if @index >= @line.length
         case @line[@index]
             when /[a-z]/
@@ -53,6 +54,10 @@ class PatternTokeniser
                 @index += 1
                 GroupEnd.new
         end
+    end
+
+    private def skip_ws
+        @index += 1 while @line[@index] =~ /\s/
     end
 
     private def explicit_reps

@@ -27,14 +27,6 @@ describe 'PatternTokeniser class' do
         expect( token.c ).to eq( "b" )
     end
 
-    it 'should ignore unwanted character input such as spaces' do
-        tokeniser = PT.new "a b"
-        token = tokeniser.next
-        token = tokeniser.next
-        expect( token ).to be_instance_of( PT::Char )
-        expect( token.c ).to eq( "b" )
-    end
-
     it 'should return a ChoiceSep object for the second entity in "a|c"' do
         tokeniser = PT.new "a|c"
         token = tokeniser.next
@@ -157,6 +149,21 @@ describe 'PatternTokeniser class' do
     it 'should return an End object for the third entity in "ab"' do
         tokeniser = PT.new "ab"
         token = tokeniser.next
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::End )
+    end
+
+    it 'should ignore unwanted whitespace in middle of string' do
+        tokeniser = PT.new "a b"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Char )
+        expect( token.c ).to eq( "b" )
+    end
+
+    it 'should ignore unwanted whitespace at end of string' do
+        tokeniser = PT.new "a "
         token = tokeniser.next
         token = tokeniser.next
         expect( token ).to be_instance_of( PT::End )
