@@ -13,14 +13,12 @@ class PatternTokeniser
     class Rep
         @@kleene_min_max_mappings = { '?' => [0, 1], '*' => [0, nil], '+' => [1, nil] }
         attr_reader :min, :max
-        def initialize c
-            @min, @max = @@kleene_min_max_mappings.fetch( c, [1,1] )
-        end
-    end
-    class Int
-        attr_reader :value
-        def initialize value
-            @value = value
+        def initialize c_or_min, max = nil
+            if c_or_min.instance_of? String
+                @min, @max = @@kleene_min_max_mappings.fetch( c_or_min, [1,1] )
+            else
+                @min, @max = c_or_min, max
+            end
         end
     end
     class ChoiceSep end
@@ -29,7 +27,7 @@ class PatternTokeniser
     class End end
 
     def initialize line
-        @line = line.gsub /[^a-z0-9*+?()|]/, ''
+        @line = line.gsub /[^a-z*+?0-9~()|]/, ''
         @index = 0
     end
     def next
@@ -44,7 +42,7 @@ class PatternTokeniser
                 @index += 1
                 r
             when /\d/
-                Int.new parse_integer
+                explicit_reps
             when '|'
                 @index += 1
                 ChoiceSep.new
@@ -55,6 +53,18 @@ class PatternTokeniser
                 @index += 1
                 GroupEnd.new
         end
+    end
+
+    private def explicit_reps
+        min = max = parse_integer
+        if @line[@index] == '~'
+            max = nil
+            @index += 1
+            if @line[@index] && @line[@index].match( /\d/ )
+                max = parse_integer
+            end
+        end
+        Rep.new min, max
     end
 
     private def parse_integer

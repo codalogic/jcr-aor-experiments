@@ -91,20 +91,64 @@ describe 'PatternTokeniser class' do
         expect( token.max ).to eq( nil )
     end
 
-    it 'should return a Int object for the second entity in "a23" at end of pattern' do
+    it 'should return a Rep object for the second entity in "a23" at end of pattern' do
         tokeniser = PT.new "a23"
         token = tokeniser.next
         token = tokeniser.next
-        expect( token ).to be_instance_of( PT::Int )
-        expect( token.value ).to eq( 23 )
+        expect( token ).to be_instance_of( PT::Rep )
+        expect( token.min ).to eq( 23 )
+        expect( token.max ).to eq( 23 )
     end
 
-    it 'should return a Int object for the second entity in "a23b" at middle of pattern' do
+    it 'should return a Rep object for the second entity in "a23b" at middle of pattern' do
         tokeniser = PT.new "a23b"
         token = tokeniser.next
         token = tokeniser.next
-        expect( token ).to be_instance_of( PT::Int )
-        expect( token.value ).to eq( 23 )
+        expect( token ).to be_instance_of( PT::Rep )
+        expect( token.min ).to eq( 23 )
+        expect( token.max ).to eq( 23 )
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Char )
+        expect( token.c ).to eq( "b" )
+    end
+
+    it 'should return a Rep object with unbounded max for the second entity in "a23~" at end of pattern' do
+        tokeniser = PT.new "a23~"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Rep )
+        expect( token.min ).to eq( 23 )
+        expect( token.max ).to eq( nil )
+    end
+
+    it 'should return a Rep object with unbounded max for the second entity in "a23~b" in middle of pattern' do
+        tokeniser = PT.new "a23~b"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Rep )
+        expect( token.min ).to eq( 23 )
+        expect( token.max ).to eq( nil )
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Char )
+        expect( token.c ).to eq( "b" )
+    end
+
+    it 'should return a Rep object with specific max for the second entity in "a23~100" at end of pattern' do
+        tokeniser = PT.new "a23~100"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Rep )
+        expect( token.min ).to eq( 23 )
+        expect( token.max ).to eq( 100 )
+    end
+
+    it 'should return a Rep object with specific max for the second entity in "a23~100b" in middle of pattern' do
+        tokeniser = PT.new "a23~100b"
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Rep )
+        expect( token.min ).to eq( 23 )
+        expect( token.max ).to eq( 100 )
         token = tokeniser.next
         expect( token ).to be_instance_of( PT::Char )
         expect( token.c ).to eq( "b" )
