@@ -4,6 +4,7 @@
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
 require_relative 'detail/pattern_tokeniser'
+require_relative 'detail/pattern'
 
 $pattern = nil
 
@@ -24,35 +25,6 @@ def process_line line
         when '-'
             test_invalid_instance line[1..-1]
     end
-end
-
-def parse_pattern line
-    $pattern = Pattern.new line
-end
-
-class Pattern
-    def initialize line
-        @nodes = []
-        line.gsub( /[^a-z0-9*+?()|]/, '' ).each_char { |c| @nodes << (PatternNode.new c) }
-    end
-
-    def size
-        @nodes.size
-    end
-end
-
-class PatternNode
-    # Pass atomic character for an atomic node, or 'nothing' to start group node
-    def initialize c = nil
-        @is_atomic = ! c.nil?
-    end
-
-    def is_atomic?
-        @is_atomic
-    end
-end
-
-class PatternNode
 end
 
 def test_valid_instance line

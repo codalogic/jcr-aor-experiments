@@ -28,33 +28,3 @@ describe 'Instance class' do
         end
     end
 end
-
-describe 'Pattern class' do
-    context 'basic behaviour' do
-
-        it 'should be created when parse_pattern method called' do
-            parse_pattern "abc"
-            expect( $pattern ).to be_instance_of( Pattern )
-        end
-
-        it 'should return the size of a single character base pattern' do
-            parse_pattern "a"
-            expect( $pattern.size ).to eq( 1 )
-        end
-
-        it 'should return the size of multiple character base pattern' do
-            parse_pattern "abc"
-            expect( $pattern.size ).to eq( 3 )
-        end
-
-        it 'should return the size of multiple character base pattern with spaces in it' do
-            parse_pattern "a b c"
-            expect( $pattern.size ).to eq( 3 )
-        end
-
-        #it 'when given an atomic node should say its atomic' do
-        #    parse_pattern "a"
-        #    expect( $pattern.is_atomic? ).to eq( true )
-        #end
-    end
-end
