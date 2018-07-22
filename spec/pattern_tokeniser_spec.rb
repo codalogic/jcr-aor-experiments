@@ -154,6 +154,18 @@ describe 'PatternTokeniser class' do
         expect( token ).to be_instance_of( PT::End )
     end
 
+    it 'should be able to repeatedly call next after End object has been returned' do
+        tokeniser = PT.new "ab"
+        token = tokeniser.next
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::End )
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::End )
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::End )
+    end
+
     it 'should ignore unwanted whitespace in middle of string' do
         tokeniser = PT.new "a b"
         token = tokeniser.next

@@ -2,7 +2,7 @@
 # MIT Licensed
 
 require 'rspec'
-require_relative '../jcr-aor'
+require_relative '../jcr_aor'
 
 describe 'Instance class' do
     context 'basic behaviour' do

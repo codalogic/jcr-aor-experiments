@@ -3,12 +3,12 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
-require_relative 'detail/pattern-tokeniser'
+require_relative 'detail/pattern_tokeniser'
 
 $pattern = nil
 
 def main
-    Dir.glob( 'jcr-aor*.txt' ) { |fname| process_file fname }
+    Dir.glob( 'jcr_aor*.txt' ) { |fname| process_file fname }
 end
 
 def process_file fname
