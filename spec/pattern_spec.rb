@@ -19,12 +19,43 @@ describe 'Pattern class' do
 
         it 'should be a kindof Subordinate' do
             p = Pattern.new
-            expect( p ).to be_kind_of( Group )
+            expect( p ).to be_kind_of( Subordinate )
         end
 
         it 'should have a size' do
             p = Pattern.new
             expect( p.size ).to eq( 0 )
+        end
+
+        it 'should not have min and max methods' do
+            p = Pattern.new
+            expect { p.min }.to raise_error( NoMethodError )
+            expect { p.max }.to raise_error( NoMethodError )
+        end
+    end
+end
+
+describe 'Group class' do
+    context 'basic behaviour' do
+
+        it 'should be creatable' do
+            g = Group.new
+        end
+
+        it 'should be a kindof Subordinate' do
+            g = Group.new
+            expect( g ).to be_kind_of( Subordinate )
+        end
+
+        it 'should have default min and max repretitions of 1' do
+            g = Group.new
+            expect( g.min ).to eq( 1 )
+            expect( g.max ).to eq( 1 )
+        end
+
+        it 'should have a size' do
+            g = Group.new
+            expect( g.size ).to eq( 0 )
         end
     end
 end
