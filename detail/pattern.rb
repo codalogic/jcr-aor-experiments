@@ -15,20 +15,38 @@ class Subordinate
 end
 
 class Member < Subordinate
+    attr_reader :c
+    def initialize c
+        super()
+        @c = c
+    end
 end
 
 class Group < Subordinate
     def initialize
-        super
+        super()
         @members = []
+    end
+
+    def << ( m )
+        @members << m
     end
 
     def size
         @members.size
     end
+
+    def [] ( i )
+        @members[i]
+    end
+
+    def each &b
+        @members.each &b
+    end
 end
 
 class Pattern < Group
+    private def rep=; end
     private def min; end
     private def max; end
 end
