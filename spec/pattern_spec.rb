@@ -93,10 +93,17 @@ describe 'Group class' do
             expect( g ).to be_kind_of( Subordinate )
         end
 
-        it 'should have default min and max repretitions of 1' do
+        it 'should have default min and max repetitions of 1' do
             g = Group.new
             expect( g.min ).to eq( 1 )
             expect( g.max ).to eq( 1 )
+        end
+
+        it 'should have be able to set min and max repetitions via a Rep object' do
+            g = Group.new
+            g.rep = PatternTokeniser::Rep.new '*'
+            expect( g.min ).to eq( 0 )
+            expect( g.max ).to eq( nil )
         end
 
         it 'should have a size' do
@@ -163,6 +170,13 @@ describe 'Member class' do
             m = Member.new 'a'
             expect( m.min ).to eq( 1 )
             expect( m.max ).to eq( 1 )
+        end
+
+        it 'should have be able to set min and max repetitions via a Rep object' do
+            m = Member.new 'a'
+            m.rep = PatternTokeniser::Rep.new '*'
+            expect( m.min ).to eq( 0 )
+            expect( m.max ).to eq( nil )
         end
 
         it 'should have a c method that returns a stored character' do
