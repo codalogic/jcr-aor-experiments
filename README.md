@@ -34,4 +34,4 @@ The pattern line has the following format:
 
 - use numbers for exact repetitions: `a2bc4`
 
-- use comma separated numbers (or `*` to represent unbounded) in square brackets to denote min~max repetitions range: `a[0,2]b[10,*]`
+- use tilde (`~`) for min -> max repetition range, where max in option (defaults to unbounded): `a2~5b10~`
