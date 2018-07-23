@@ -210,6 +210,13 @@ describe 'parse_pattern global method' do
             expect( $pattern.size ).to eq( 3 )
         end
 
+        it 'should be able to access the characters in a pattern' do
+            parse_pattern "abc"
+            expect( $pattern[0].c ).to eq( 'a' )
+            expect( $pattern[1].c ).to eq( 'b' )
+            expect( $pattern[2].c ).to eq( 'c' )
+        end
+
         it 'should parse a repetition of ?' do
             parse_pattern "a?"
             expect( $pattern[0].min ).to eq( 0 )
@@ -228,9 +235,28 @@ describe 'parse_pattern global method' do
             expect( $pattern[0].max ).to eq( nil )
         end
 
-        it 'should return the size of a single character base pattern' do
-            parse_pattern "a"
-            expect( $pattern.size ).to eq( 1 )
+        it 'should parse a repetition of + followed by a repetition of 6' do
+            parse_pattern "a+b6"
+            expect( $pattern[0].min ).to eq( 1 )
+            expect( $pattern[0].max ).to eq( nil )
+            expect( $pattern[1].min ).to eq( 6 )
+            expect( $pattern[1].max ).to eq( 6 )
+        end
+
+        it 'should parse a repetition of + followed by a repetition of 6~' do
+            parse_pattern "a+b6~c"
+            expect( $pattern[0].min ).to eq( 1 )
+            expect( $pattern[0].max ).to eq( nil )
+            expect( $pattern[1].min ).to eq( 6 )
+            expect( $pattern[1].max ).to eq( nil )
+        end
+
+        it 'should parse a repetition of + followed by a repetition of 6~100' do
+            parse_pattern "a+b6~100c"
+            expect( $pattern[0].min ).to eq( 1 )
+            expect( $pattern[0].max ).to eq( nil )
+            expect( $pattern[1].min ).to eq( 6 )
+            expect( $pattern[1].max ).to eq( 100 )
         end
     end
 end
