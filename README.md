@@ -34,4 +34,4 @@ The pattern line has the following format:
 
 - use numbers for exact repetitions: `a2bc4`
 
-- use tilde (`~`) for min -> max repetition range, where max in option (defaults to unbounded): `a2~5b10~`
+- use tilde (`~`) for min -> max repetition range, where max in optional (defaults to unbounded): `a2~5b10~`
