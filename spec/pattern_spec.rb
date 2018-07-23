@@ -32,6 +32,11 @@ describe 'Pattern class' do
             expect { p.min }.to raise_error( NoMethodError )
             expect { p.max }.to raise_error( NoMethodError )
         end
+
+        it 'should not have rep= method' do
+            p = Pattern.new
+            expect { p.rep = PatternTokeniser::Rep.new '?' }.to raise_error( NoMethodError )
+        end
     end
 
     context 'composition behaviour' do
