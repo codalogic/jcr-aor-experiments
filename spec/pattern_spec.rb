@@ -186,3 +186,51 @@ describe 'Member class' do
 
     end
 end
+
+describe 'parse_pattern global method' do
+    context 'basic behaviour' do
+
+        it 'should be created when parse_pattern method called' do
+            parse_pattern "abc"
+            expect( $pattern ).to be_instance_of( Pattern )
+        end
+
+        it 'should return the size of a single character base pattern' do
+            parse_pattern "a"
+            expect( $pattern.size ).to eq( 1 )
+        end
+
+        it 'should return the size of multiple character base pattern' do
+            parse_pattern "abc"
+            expect( $pattern.size ).to eq( 3 )
+        end
+
+        it 'should return the size of multiple character base pattern with spaces in it' do
+            parse_pattern "a b c"
+            expect( $pattern.size ).to eq( 3 )
+        end
+
+        it 'should parse a repetition of ?' do
+            parse_pattern "a?"
+            expect( $pattern[0].min ).to eq( 0 )
+            expect( $pattern[0].max ).to eq( 1 )
+        end
+
+        it 'should parse a repetition of *' do
+            parse_pattern "a*"
+            expect( $pattern[0].min ).to eq( 0 )
+            expect( $pattern[0].max ).to eq( nil )
+        end
+
+        it 'should parse a repetition of +' do
+            parse_pattern "a+"
+            expect( $pattern[0].min ).to eq( 1 )
+            expect( $pattern[0].max ).to eq( nil )
+        end
+
+        it 'should return the size of a single character base pattern' do
+            parse_pattern "a"
+            expect( $pattern.size ).to eq( 1 )
+        end
+    end
+end

@@ -3,6 +3,8 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
+require_relative 'pattern_tokeniser'
+
 class Subordinate
     attr_reader :min, :max
     def initialize
@@ -51,6 +53,28 @@ class Pattern < Group
     private def max; end
 end
 
+class PatternParser
+    def initialize line
+        @line = line
+        $pattern = Pattern.new
+        @pt = PatternTokeniser.new line
+        parse_group $pattern
+    end
+
+    private def parse_group g
+        loop do
+            case t = @pt.next
+                when PatternTokeniser::Char
+                    g << Member.new( t.c )
+                when PatternTokeniser::Rep
+                    g[-1].rep = t
+                when PatternTokeniser::End
+                    break
+            end
+        end
+    end
+end
+
 def parse_pattern line
-    $pattern = Pattern.new
+    PatternParser.new line
 end
