@@ -73,6 +73,7 @@ class PatternParser
                 when PatternTokeniser::Rep
                     g.back.rep = t
                 when PatternTokeniser::End
+                    puts "Unexpected end of pattern" if ! g.instance_of? Pattern
                     break
             end
         end
