@@ -38,6 +38,10 @@ class Group < Subordinate
         @members.size
     end
 
+    def back
+        @members[-1]
+    end
+
     def [] ( i )
         @members[i]
     end
@@ -67,7 +71,7 @@ class PatternParser
                 when PatternTokeniser::Char
                     g << Member.new( t.c )
                 when PatternTokeniser::Rep
-                    g[-1].rep = t
+                    g.back.rep = t
                 when PatternTokeniser::End
                     break
             end
