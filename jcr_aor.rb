@@ -13,7 +13,8 @@ def main
 end
 
 def process_file fname
-    File.foreach( fname ) { |line| process_line line }
+    line_num = 1
+    File.foreach( fname ) { |line| process_line line_num, line; line_num += 1 }
 end
 
 def process_line line

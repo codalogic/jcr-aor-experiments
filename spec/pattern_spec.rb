@@ -22,6 +22,19 @@ describe 'Pattern class' do
             expect( p ).to be_kind_of( Subordinate )
         end
 
+        it 'should indicate whether it is a sequence' do
+            p = Pattern.new
+            expect( p.sequence? ).to eq( true )
+            expect( p.choice? ).to eq( false )
+        end
+
+        it 'should be settable to a choice and indicate whether it is a choice' do
+            p = Pattern.new
+            p.choice
+            expect( p.choice? ).to eq( true )
+            expect( p.sequence? ).to eq( false )
+        end
+
         it 'should have a size' do
             p = Pattern.new
             expect( p.size ).to eq( 0 )
@@ -104,6 +117,19 @@ describe 'Group class' do
             g.rep = PatternTokeniser::Rep.new '*'
             expect( g.min ).to eq( 0 )
             expect( g.max ).to eq( nil )
+        end
+
+        it 'should indicate whether it is a sequence' do
+            g = Group.new
+            expect( g.sequence? ).to eq( true )
+            expect( g.choice? ).to eq( false )
+        end
+
+        it 'should be settable to a choice and indicate whether it is a choice' do
+            g = Group.new
+            g.choice
+            expect( g.choice? ).to eq( true )
+            expect( g.sequence? ).to eq( false )
         end
 
         it 'should have a size' do
@@ -191,52 +217,52 @@ describe 'parse_pattern global method' do
     context 'basic behaviour' do
 
         it 'should be created when parse_pattern method called' do
-            parse_pattern "abc"
+            parse_pattern 1, "abc"
             expect( $pattern ).to be_instance_of( Pattern )
         end
 
         it 'should return the size of a single character base pattern' do
-            parse_pattern "a"
+            parse_pattern 1, "a"
             expect( $pattern.size ).to eq( 1 )
         end
 
         it 'should return the size of multiple character base pattern' do
-            parse_pattern "abc"
+            parse_pattern 1, "abc"
             expect( $pattern.size ).to eq( 3 )
         end
 
         it 'should return the size of multiple character base pattern with spaces in it' do
-            parse_pattern "a b c"
+            parse_pattern 1, "a b c"
             expect( $pattern.size ).to eq( 3 )
         end
 
         it 'should be able to access the characters in a pattern' do
-            parse_pattern "abc"
+            parse_pattern 1, "abc"
             expect( $pattern[0].c ).to eq( 'a' )
             expect( $pattern[1].c ).to eq( 'b' )
             expect( $pattern[2].c ).to eq( 'c' )
         end
 
         it 'should parse a repetition of ?' do
-            parse_pattern "a?"
+            parse_pattern 1, "a?"
             expect( $pattern[0].min ).to eq( 0 )
             expect( $pattern[0].max ).to eq( 1 )
         end
 
         it 'should parse a repetition of *' do
-            parse_pattern "a*"
+            parse_pattern 1, "a*"
             expect( $pattern[0].min ).to eq( 0 )
             expect( $pattern[0].max ).to eq( nil )
         end
 
         it 'should parse a repetition of +' do
-            parse_pattern "a+"
+            parse_pattern 1, "a+"
             expect( $pattern[0].min ).to eq( 1 )
             expect( $pattern[0].max ).to eq( nil )
         end
 
         it 'should parse a repetition of + followed by a repetition of 6' do
-            parse_pattern "a+b6"
+            parse_pattern 1, "a+b6"
             expect( $pattern[0].min ).to eq( 1 )
             expect( $pattern[0].max ).to eq( nil )
             expect( $pattern[1].min ).to eq( 6 )
@@ -244,7 +270,7 @@ describe 'parse_pattern global method' do
         end
 
         it 'should parse a repetition of + followed by a repetition of 6~' do
-            parse_pattern "a+b6~c"
+            parse_pattern 1, "a+b6~c"
             expect( $pattern[0].min ).to eq( 1 )
             expect( $pattern[0].max ).to eq( nil )
             expect( $pattern[1].min ).to eq( 6 )
@@ -252,11 +278,58 @@ describe 'parse_pattern global method' do
         end
 
         it 'should parse a repetition of + followed by a repetition of 6~100' do
-            parse_pattern "a+b6~100c"
+            parse_pattern 1, "a+b6~100c"
             expect( $pattern[0].min ).to eq( 1 )
             expect( $pattern[0].max ).to eq( nil )
             expect( $pattern[1].min ).to eq( 6 )
             expect( $pattern[1].max ).to eq( 100 )
+        end
+
+        it 'should be a sequence be default' do
+            parse_pattern 1, "a"
+            expect( $pattern.sequence? ).to eq( true )
+            expect( $pattern.choice? ).to eq( false )
+        end
+
+        it 'should be settable to a choice' do
+            parse_pattern 1, "a|"
+            expect( $pattern.sequence? ).to eq( false )
+            expect( $pattern.choice? ).to eq( true )
+        end
+    end
+
+    context 'nested group behaviour' do
+
+        it 'should be able to add a nested group' do
+            parse_pattern 1, "a(b)c"
+            expect( $pattern[0].c ).to eq( 'a' )
+            expect( $pattern[1] ).to be_instance_of( Group )
+            expect( $pattern[1][0].c ).to eq( 'b' )
+            expect( $pattern[2].c ).to eq( 'c' )
+        end
+
+        it 'should be able to add a nested choice group' do
+            parse_pattern 1, "a(b|)c"
+            expect( $pattern[0].c ).to eq( 'a' )
+            expect( $pattern[1] ).to be_instance_of( Group )
+            expect( $pattern[1].choice? ).to be( true )
+            expect( $pattern[1][0].c ).to eq( 'b' )
+            expect( $pattern[2].c ).to eq( 'c' )
+        end
+    end
+
+    context 'error handling' do
+
+        it 'should raise an error if the end of the pattern is found while nested' do
+            expect { parse_pattern_with_exceptions "a(b" }.to raise_error( RuntimeError )
+        end
+
+        it 'should raise an error if the pattern contains illegal characters' do
+            expect { parse_pattern_with_exceptions "a%b" }.to raise_error( RuntimeError )
+        end
+
+        it 'should raise an error if unmatched closing brackets' do
+            expect { parse_pattern_with_exceptions "a(b)c)d" }.to raise_error( RuntimeError )
         end
     end
 end

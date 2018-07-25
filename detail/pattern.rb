@@ -28,6 +28,19 @@ class Group < Subordinate
     def initialize
         super()
         @members = []
+        @is_choice = false
+    end
+
+    def choice
+        @is_choice = true
+    end
+
+    def sequence?
+        ! @is_choice
+    end
+
+    def choice?
+        @is_choice
     end
 
     def << ( m )
@@ -72,14 +85,33 @@ class PatternParser
                     g << Member.new( t.c )
                 when PatternTokeniser::Rep
                     g.back.rep = t
+                when PatternTokeniser::ChoiceSep
+                    g.choice
+                when PatternTokeniser::GroupStart
+                    g << Group.new
+                    parse_group g.back
+                when PatternTokeniser::GroupEnd
+                    raise "Unmatched closing bracket at index #{@pt.index-1}" if g.instance_of? Pattern
+                    return
                 when PatternTokeniser::End
-                    puts "Unexpected end of pattern" if ! g.instance_of? Pattern
+                    raise "Unexpected end of pattern" if ! g.instance_of? Pattern
                     break
+                when PatternTokeniser::Illegal
+                    raise "Illegal character '#{t.c}' at index #{t.index}"
             end
         end
     end
 end
 
-def parse_pattern line
+def parse_pattern_with_exceptions line
     PatternParser.new line
+end
+
+def parse_pattern line_num, line
+    begin
+        parse_pattern_with_exceptions line
+
+    rescue StandardError => e
+        puts "Error (line #{line_num}): #{e.message}"
+    end
 end

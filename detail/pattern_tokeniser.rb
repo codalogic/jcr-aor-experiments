@@ -25,10 +25,10 @@ class PatternTokeniser
     class GroupStart end
     class GroupEnd end
     class End end
-    class Error
-        attr_reader :index
-        def initialize index
-            @index = index
+    class Illegal
+        attr_reader :index, :c
+        def initialize index, c
+            @index, @c = index, c
         end
     end
 
@@ -36,6 +36,15 @@ class PatternTokeniser
         @line = line
         @index = 0
     end
+
+    def index
+        @index
+    end
+
+    def c
+        @line[@index]
+    end
+
     def next
         skip_ws
         return End.new if @index >= @line.length
@@ -60,7 +69,7 @@ class PatternTokeniser
                 @index += 1
                 GroupEnd.new
             else
-                r = Error.new @index
+                r = Illegal.new @index, @line[@index]
                 @index += 1
                 r
         end
