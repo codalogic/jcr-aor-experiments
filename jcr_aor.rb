@@ -5,6 +5,7 @@
 
 require_relative 'detail/pattern_tokeniser'
 require_relative 'detail/pattern'
+require_relative 'detail/instance'
 
 $pattern = nil
 
@@ -36,16 +37,6 @@ end
 
 def test_invalid_instance line
     # TODO
-end
-
-class Instance
-    def initialize line
-        @line = line.strip
-        @line.gsub! /[^a-z]/, ''
-    end
-    def [] index
-        index < @line.size ? @line[index] : ''
-    end
 end
 
 main if __FILE__ == $PROGRAM_NAME
