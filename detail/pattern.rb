@@ -65,9 +65,9 @@ class Group < Subordinate
 end
 
 class Pattern < Group
-    private def rep=; end
-    private def min; end
-    private def max; end
+    undef :rep=
+    undef :min
+    undef :max
 end
 
 class PatternParser
