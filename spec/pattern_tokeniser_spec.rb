@@ -27,6 +27,14 @@ describe 'PatternTokeniser class' do
         expect( token.c ).to eq( "b" )
     end
 
+    it 'should return a Char object for the wildcard entity in "a."' do
+        tokeniser = PT.new "a."
+        token = tokeniser.next
+        token = tokeniser.next
+        expect( token ).to be_instance_of( PT::Char )
+        expect( token.c ).to eq( "." )
+    end
+
     it 'should return a ChoiceSep object for the second entity in "a|c"' do
         tokeniser = PT.new "a|c"
         token = tokeniser.next

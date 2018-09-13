@@ -24,6 +24,8 @@ The pattern line has the following format:
 
 - use lower case letters to denote member rule names
 
+- use `.` to indicate a wildcard that matches any letter
+
 - for a simple sequence, do `abc`
 
 - for a choice, use pipe separators: `a|b|c`

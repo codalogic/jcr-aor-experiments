@@ -49,7 +49,7 @@ class PatternTokeniser
         skip_ws
         return End.new if @index >= @line.length
         case @line[@index]
-            when /[a-z]/
+            when /[a-z\.]/
                 r = Char.new @line[@index]
                 @index += 1
                 r
