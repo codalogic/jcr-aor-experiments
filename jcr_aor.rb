@@ -31,9 +31,11 @@ end
 def test_valid_instance line
     instance = Instance.new line
     puts instance[1]
+    # TODO
 end
 
 def test_invalid_instance line
+    # TODO
 end
 
 class Instance
