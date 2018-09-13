@@ -210,6 +210,22 @@ describe 'Member class' do
             expect( m.c ).to eq( 'a' )
         end
 
+        it 'should have a matches? method that returns true if the given character matches the stored character' do
+            m = Member.new 'a'
+            expect( m.matches?( 'a' ) ).to be( true )
+        end
+
+        it 'should have a matches? method that returns false if the given character does not matche the stored character' do
+            m = Member.new 'a'
+            expect( m.matches?( 'b' ) ).to be( false )
+        end
+
+        it 'should have a matches? method that returns true for all given characters when matching the wildcard' do
+            m = Member.new '.'
+            expect( m.matches?( 'a' ) ).to be( true )
+            expect( m.matches?( 'b' ) ).to be( true )
+        end
+
     end
 end
 

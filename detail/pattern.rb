@@ -22,6 +22,9 @@ class Member < Subordinate
         super()
         @c = c
     end
+    def matches? c
+        return @c == "." || c == @c
+    end
 end
 
 class Group < Subordinate
