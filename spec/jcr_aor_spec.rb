@@ -8,11 +8,7 @@ describe 'Instance class' do
     context 'basic behaviour' do
         instance = nil
         before do
-            instance = Instance.new '+ab cd '
-        end
-
-        it 'should capture pass/fail status' do
-            expect( instance.is_pass_expected ).to eq( true )
+            instance = Instance.new 'ab cd '
         end
 
         it 'should strip leading pass/fail status' do

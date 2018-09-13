@@ -41,11 +41,7 @@ end
 class Instance
     def initialize line
         @line = line.strip
-        @is_pass_expected = (@line[0] == '+')
         @line.gsub! /[^a-z]/, ''
-    end
-    def is_pass_expected
-        @is_pass_expected
     end
     def [] index
         index < @line.size ? @line[index] : ''
