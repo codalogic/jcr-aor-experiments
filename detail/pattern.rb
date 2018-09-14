@@ -90,14 +90,22 @@ class Pattern < Group
     undef :rep=
     undef :min
     undef :max
+
+    def initialize line = nil
+        super()
+        if line
+            PatternParser.new line, self
+        end
+    end
 end
 
 class PatternParser
-    def initialize line
+    def initialize line, pattern
         @line = line
-        $pattern = Pattern.new
+        @pattern = pattern
         @pt = PatternTokeniser.new line
-        parse_group $pattern
+        parse_group @pattern
+        @pattern.freeze
     end
 
     private def parse_group g
@@ -126,7 +134,7 @@ class PatternParser
 end
 
 def parse_pattern_with_exceptions line
-    PatternParser.new line
+    $pattern = Pattern.new line
 end
 
 def parse_pattern line_num, line
