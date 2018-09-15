@@ -28,6 +28,9 @@ require_relative 'instance'
 require 'full_dup'
 
 module ValidatorMemberExtensions
+    def init
+        @occurences = 0
+    end
     def occurences
         @occurrences
     end
@@ -37,6 +40,9 @@ module ValidatorMemberExtensions
 end
 
 module ValidatorGroupExclusions
+    def init
+        @exclusions = []
+    end
     def exclusions
         @exclusions
     end
@@ -45,26 +51,27 @@ module ValidatorGroupExclusions
     end
 end
 
-class Validator
+class Validator < Pattern
     def initialize pattern
-        @validator = make_validator pattern
+        adopt_pattern pattern
+        enhance
     end
     def valid? instance
     end
 
-    private def make_validator pattern
-        validator = pattern.full_dup
-        enhance validator
+    private def adopt_pattern pattern
+        pattern.instance_variables.each { |v| instance_variable_set( v, pattern.instance_variable_get( v ).full_dup ) }
     end
-    private def enhance g
+
+    private def enhance g = self
         g.each do |sub|
             case sub
                 when Member
-                    sub.instance_variable_set( :@occurrences, 0 )
                     sub.extend ValidatorMemberExtensions
+                    sub.init
                 when Group
-                    sub.instance_variable_set( :@exclusions, [] )
-                    sub.extend ValidatorGroupExclusions
+                    sub.extend ValidatorGroupExtensions
+                    sub.init
                     enhance g
             end
         end
