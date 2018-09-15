@@ -22,7 +22,6 @@
 #
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
-require_relative 'detail/pattern_tokeniser'
 require_relative 'detail/pattern'
 require_relative 'detail/instance'
 require_relative 'detail/validator'
