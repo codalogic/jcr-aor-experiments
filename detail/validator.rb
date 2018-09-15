@@ -55,6 +55,7 @@ class Validator < Pattern
     def initialize pattern
         adopt_pattern pattern
         enhance
+        augment_choices
     end
     def valid? instance
     end
@@ -76,6 +77,9 @@ class Validator < Pattern
             end
         end
         g
+    end
+
+    private def augment_choices g = self
     end
 
     private def each_member g = self, &b
