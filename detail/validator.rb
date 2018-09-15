@@ -77,4 +77,36 @@ class Validator < Pattern
         end
         g
     end
+
+    private def each_member g = self, &b
+        g.each do |sub|
+            case sub
+                when Member
+                    yield sub
+                when Group
+                    each_member g, &b
+            end
+        end
+        g
+    end
+
+    private def each_local_member g = self, &b
+        g.each do |sub|
+            case sub
+                when Member
+                    yield sub
+            end
+        end
+        g
+    end
+
+    private def each_local_sub_group g = self, &b
+        g.each do |sub|
+            case sub
+                when Group
+                    yield sub
+            end
+        end
+        g
+    end
 end
