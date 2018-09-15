@@ -25,9 +25,49 @@
 require_relative 'pattern'
 require_relative 'instance'
 
+require 'full_dup'
+
+module ValidatorMemberExtensions
+    def occurences
+        @occurrences
+    end
+    def inc_occurences
+        @occurences += 1
+    end
+end
+
+module ValidatorGroupExclusions
+    def exclusions
+        @exclusions
+    end
+    def excluded? c
+        @exclusions.include? c
+    end
+end
+
 class Validator
     def initialize pattern
+        @validator = make_validator pattern
     end
     def valid? instance
+    end
+
+    private def make_validator pattern
+        validator = pattern.full_dup
+        enhance validator
+    end
+    private def enhance g
+        g.each do |sub|
+            case sub
+                when Member
+                    sub.instance_variable_set( :@occurrences, 0 )
+                    sub.extend ValidatorMemberExtensions
+                when Group
+                    sub.instance_variable_set( :@exclusions, [] )
+                    sub.extend ValidatorGroupExclusions
+                    enhance g
+            end
+        end
+        g
     end
 end
