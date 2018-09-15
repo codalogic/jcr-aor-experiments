@@ -94,18 +94,15 @@ class Pattern < Group
     def initialize line = nil
         super()
         if line
-            PatternParser.new line, self
+            parse_pattern line
         end
     end
-end
 
-class PatternParser
-    def initialize line, pattern
+    private def parse_pattern line
         @line = line
-        @pattern = pattern
         @pt = PatternTokeniser.new line
-        parse_group @pattern
-        @pattern.freeze
+        parse_group self
+        freeze
     end
 
     private def parse_group g
