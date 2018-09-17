@@ -26,6 +26,7 @@ require_relative 'pattern'
 require_relative 'instance'
 
 require 'full_dup'
+require 'set'
 
 module ValidatorMemberExtensions
     def init
@@ -41,7 +42,7 @@ end
 
 module ValidatorGroupExclusions
     def init
-        @exclusions = []
+        @exclusions = Set.new
     end
     def exclusions
         @exclusions
