@@ -30,13 +30,13 @@ require 'set'
 
 module ValidatorMemberExtensions
     def init
-        @occurences = 0
+        @occurrences = 0
     end
-    def occurences
+    def occurrences
         @occurrences
     end
-    def inc_occurences
-        @occurences += 1
+    def inc_occurrences
+        @occurrences += 1
     end
 end
 
