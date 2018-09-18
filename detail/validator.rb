@@ -28,8 +28,8 @@ require_relative 'instance'
 require 'full_dup'
 require 'set'
 
-module ValidatorMemberExtensions
-    def init
+module ValidatorOccurrencesMixin
+    def init_occurrences
         @occurrences = 0
     end
     def occurrences
@@ -40,8 +40,8 @@ module ValidatorMemberExtensions
     end
 end
 
-module ValidatorGroupExclusions
-    def init
+module ValidatorExclusionsMixin
+    def init_exclusions
         @exclusions = Set.new
     end
     def exclusions
@@ -67,13 +67,14 @@ class Validator < Pattern
 
     private def enhance g = self
         g.each do |sub|
+            sub.extend ValidatorExclusionsMixin
+            sub.init_exclusions
+
             case sub
                 when Member
-                    sub.extend ValidatorMemberExtensions
-                    sub.init
+                    sub.extend ValidatorOccurrencesMixin
+                    sub.init_occurrences
                 when Group
-                    sub.extend ValidatorGroupExtensions
-                    sub.init
                     enhance g
             end
         end
