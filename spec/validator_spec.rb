@@ -68,4 +68,6 @@ describe 'Validator class' do
             expect( v[1][0].exclusions.empty? ).to eq( true )
         end
     end
+    context 'augmentation' do
+    end
 end
