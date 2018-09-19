@@ -31,5 +31,41 @@ describe 'Validator class' do
         it 'should be creatable' do
             v = Validator.new Pattern.new
         end
+        it 'should have a size method' do
+            v = Validator.new( Pattern.new 'abc' )
+            expect( v.size ).to eq( 3 )
+        end
+    end
+    context 'method enhancements' do
+        it 'should have occurences methods for a member' do
+            v = Validator.new( Pattern.new 'abc' )
+            expect( v[0].occurrences ).to eq( 0 )
+        end
+        it 'should have inc_occurrences methods for a member' do
+            v = Validator.new( Pattern.new 'abc' )
+            v[0].inc_occurrences
+            expect( v[0].occurrences ).to eq( 1 )
+        end
+        it 'should have inc_occurrences methods for a child members' do
+            v = Validator.new( Pattern.new 'a(b)c' )
+            v[1][0].inc_occurrences
+            expect( v[1][0].occurrences ).to eq( 1 )
+        end
+        it 'should have exclusions methods for a member' do
+            v = Validator.new( Pattern.new 'abc' )
+            expect( v[0].exclusions.empty? ).to eq( true )
+        end
+        it 'should have exclusions methods for a group' do
+            v = Validator.new( Pattern.new '(abc)' )
+            expect( v[0].exclusions.empty? ).to eq( true )
+        end
+        it 'should have exclusions methods for a child member' do
+            v = Validator.new( Pattern.new 'a(b)c' )
+            expect( v[1][0].exclusions.empty? ).to eq( true )
+        end
+        it 'should have exclusions methods for a child group' do
+            v = Validator.new( Pattern.new 'a((b))c' )
+            expect( v[1][0].exclusions.empty? ).to eq( true )
+        end
     end
 end

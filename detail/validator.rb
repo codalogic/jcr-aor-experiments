@@ -56,7 +56,7 @@ class Validator < Pattern
     def initialize pattern
         adopt_pattern pattern
         enhance
-        augment_choices
+        # augment_choices
     end
     def valid? instance
     end
@@ -75,13 +75,31 @@ class Validator < Pattern
                     sub.extend ValidatorOccurrencesMixin
                     sub.init_occurrences
                 when Group
-                    enhance g
+                    enhance sub
             end
         end
         g
     end
 
     private def augment_choices g = self
+        if g.choice?
+            all_members = Set.new
+            each_member { |m| all_members << m }
+            each do |sub|
+                
+            end
+        end
+        each_local_sub_group { |g| augment_choices g }
+    end
+
+    private def all_members sub = self
+        all_members = Set.new
+        if sub.instance_of? Member
+            all_members << sub
+        else
+            each_member { |m| all_members << m }
+        end
+        all_members
     end
 
     private def each_member g = self, &b
