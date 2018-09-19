@@ -40,10 +40,10 @@ class PatternTokeniser
             end
         end
     end
-    class ChoiceSep end
-    class GroupStart end
-    class GroupEnd end
-    class End end
+    class ChoiceSep; end
+    class GroupStart; end
+    class GroupEnd; end
+    class End; end
     class Illegal
         attr_reader :index, :c
         def initialize index, c
