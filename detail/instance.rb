@@ -30,4 +30,7 @@ class Instance
     def [] index
         index < @line.size ? @line[index] : ''
     end
+    def each &b
+        @line.each_char &b
+    end
 end

@@ -43,5 +43,11 @@ describe 'Instance class' do
         it 'should return the empty string for indexes greater than the length of the string' do
             expect( instance[400] ).to eq( '' )
         end
+
+        it 'should have an each method' do
+            res = ''
+            instance.each { |i| res += i }
+            expect( res ).to eq( 'abcd' )
+        end
     end
 end
