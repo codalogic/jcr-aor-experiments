@@ -107,4 +107,31 @@ describe 'Validator class' do
             expect( v[1].excluded? 'b' ).to eq( false )
         end
     end
+
+    context 'nested augmentation' do
+        it 'should exclude nested b & d (& c) for first member in choice a|(bd)|c' do
+            v = Validator.new( Pattern.new 'a|(bd)|c' )
+            expect( v[0].excluded? 'b' ).to eq( true )
+            expect( v[0].excluded? 'c' ).to eq( true )
+            expect( v[0].excluded? 'd' ).to eq( true )
+        end
+        it 'should exclude nested a & c for second member in choice a|(bd)|c' do
+            v = Validator.new( Pattern.new 'a|(bd)|c' )
+            expect( v[1].excluded? 'a' ).to eq( true )
+            expect( v[1].excluded? 'c' ).to eq( true )
+        end
+        it 'should exclude nested a & c for second member in choice a|(b|d)|c' do
+            v = Validator.new( Pattern.new 'a|(b|d)|c' )
+            expect( v[1].excluded? 'a' ).to eq( true )
+            expect( v[1].excluded? 'c' ).to eq( true )
+        end
+        it 'should exclude d from member[1][0] in choice a|(b|d)|c' do
+            v = Validator.new( Pattern.new 'a|(b|d)|c' )
+            expect( v[1][0].excluded? 'd' ).to eq( true )
+        end
+        it 'should not exclude a from member[1][0] in choice a|(b|d)|c' do
+            v = Validator.new( Pattern.new 'a|(b|d)|c' )
+            expect( v[1][0].excluded? 'a' ).to eq( false )
+        end
+    end
 end

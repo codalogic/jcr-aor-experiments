@@ -87,7 +87,7 @@ class Validator < Pattern
     private def augment_choices g = self
         if g.choice?
             all_group_members = all_member_names g
-            each do |sub|
+            g.each do |sub|
                 all_sub_members = all_member_names sub
                 sub.exclusions = all_group_members - all_sub_members
             end
@@ -100,7 +100,7 @@ class Validator < Pattern
         if sub.instance_of? Member
             every_child_member << sub.c
         else
-            each_member { |m| every_child_member << m.c }
+            each_member( sub ) { |m| every_child_member << m.c }
         end
         every_child_member
     end
