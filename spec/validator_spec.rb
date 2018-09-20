@@ -133,5 +133,21 @@ describe 'Validator class' do
             v = Validator.new( Pattern.new 'a|(b|d)|c' )
             expect( v[1][0].excluded? 'a' ).to eq( false )
         end
+        it 'should exclude d & e from member[1][0] in choice a|(b|(de))|c' do
+            v = Validator.new( Pattern.new 'a|(b|(de))|c' )
+            expect( v[1][0].excluded? 'd' ).to eq( true )
+            expect( v[1][0].excluded? 'e' ).to eq( true )
+        end
+        it 'should exclude a, b, d & e from member[2] in choice a|(b|(de))|c' do
+            v = Validator.new( Pattern.new 'a|(b|(de))|c' )
+            expect( v[2].excluded? 'a' ).to eq( true )
+            expect( v[2].excluded? 'b' ).to eq( true )
+            expect( v[2].excluded? 'd' ).to eq( true )
+            expect( v[2].excluded? 'e' ).to eq( true )
+        end
+        it 'should exclude e from member[1][1][0] in choice a|(b|(d|e))|c' do
+            v = Validator.new( Pattern.new 'a|(b|(d|e))|c' )
+            expect( v[1][1][0].excluded? 'e' ).to eq( true )
+        end
     end
 end
