@@ -55,6 +55,18 @@ module ValidatorExclusionsMixin
     end
 end
 
+module ValidatorStatusMixin
+    def init_status
+        @status = false
+    end
+    def status= s
+        @status = s
+    end
+    def ok?
+        @status
+    end
+end
+
 class Validator < Pattern
     def initialize pattern
         adopt_pattern pattern
@@ -72,6 +84,8 @@ class Validator < Pattern
         g.each do |sub|
             sub.extend ValidatorExclusionsMixin
             sub.init_exclusions
+            sub.extend ValidatorStatusMixin
+            sub.init_status
 
             case sub
                 when Member

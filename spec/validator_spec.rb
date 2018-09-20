@@ -69,6 +69,20 @@ describe 'Validator class' do
             v = Validator.new( Pattern.new 'a((b))c' )
             expect( v[1][0].exclusions.empty? ).to eq( true )
         end
+        it 'should have status methods for a member' do
+            v = Validator.new( Pattern.new 'abc' )
+            expect( v[0].ok? ).to eq( false )
+        end
+        it 'should have status setting methods for a member' do
+            v = Validator.new( Pattern.new 'abc' )
+            v[0].status = true
+            expect( v[0].ok? ).to eq( true )
+        end
+        it 'should have status methods for a child members' do
+            v = Validator.new( Pattern.new 'a(b)c' )
+            v[1][0].status = true
+            expect( v[1][0].ok? ).to eq( true )
+        end
     end
 
     context 'non-nested augmentation' do
