@@ -44,6 +44,9 @@ module ValidatorExclusionsMixin
     def init_exclusions
         @exclusions = Set.new
     end
+    def exclusions= e
+        @exclusions = e
+    end
     def exclusions
         @exclusions
     end
@@ -83,20 +86,21 @@ class Validator < Pattern
 
     private def augment_choices g = self
         if g.choice?
-            every_child_member = all_members g
+            all_group_members = all_member_names g
             each do |sub|
-                
+                all_sub_members = all_member_names sub
+                sub.exclusions = all_group_members - all_sub_members
             end
         end
         each_local_sub_group( g ) { |sub| augment_choices sub }
     end
 
-    private def all_members sub = self
+    private def all_member_names sub = self
         every_child_member = Set.new
         if sub.instance_of? Member
-            every_child_member << sub
+            every_child_member << sub.c
         else
-            each_member { |m| every_child_member << m }
+            each_member { |m| every_child_member << m.c }
         end
         every_child_member
     end

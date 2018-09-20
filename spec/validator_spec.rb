@@ -71,6 +71,40 @@ describe 'Validator class' do
         end
     end
 
-    context 'augmentation' do
+    context 'non-nested augmentation' do
+        it 'should have no exclusions for a member in a sequence' do
+            v = Validator.new( Pattern.new 'abc' )
+            expect( v[0].exclusions.empty? ).to eq( true )
+        end
+        it 'should have exclusions for a member in a choice' do
+            v = Validator.new( Pattern.new 'a|b|c' )
+            expect( v[0].exclusions.empty? ).to eq( false )
+        end
+        it 'should have exclusions for a second member in a choice' do
+            v = Validator.new( Pattern.new 'a|b|c' )
+            expect( v[1].exclusions.empty? ).to eq( false )
+        end
+        it 'should have 2 exclusions for a first member in a choice' do
+            v = Validator.new( Pattern.new 'a|b|c' )
+            expect( v[1].exclusions.size ).to eq( 2 )
+        end
+        it 'should exclude b & c for first member in choice a|b|c' do
+            v = Validator.new( Pattern.new 'a|b|c' )
+            expect( v[0].excluded? 'b' ).to eq( true )
+            expect( v[0].excluded? 'c' ).to eq( true )
+        end
+        it 'should not exclude a for first member in choice a|b|c' do
+            v = Validator.new( Pattern.new 'a|b|c' )
+            expect( v[0].excluded? 'a' ).to eq( false )
+        end
+        it 'should exclude a & c for second member in choice a|b|c' do
+            v = Validator.new( Pattern.new 'a|b|c' )
+            expect( v[1].excluded? 'a' ).to eq( true )
+            expect( v[1].excluded? 'c' ).to eq( true )
+        end
+        it 'should not exclude b for second member in choice a|b|c' do
+            v = Validator.new( Pattern.new 'a|b|c' )
+            expect( v[1].excluded? 'b' ).to eq( false )
+        end
     end
 end
