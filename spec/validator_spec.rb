@@ -23,6 +23,7 @@
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
 require 'rspec'
+
 require_relative '../jcr_aor'
 
 describe 'Validator class' do
@@ -36,6 +37,7 @@ describe 'Validator class' do
             expect( v.size ).to eq( 3 )
         end
     end
+
     context 'method enhancements' do
         it 'should have occurences methods for a member' do
             v = Validator.new( Pattern.new 'abc' )
@@ -68,6 +70,7 @@ describe 'Validator class' do
             expect( v[1][0].exclusions.empty? ).to eq( true )
         end
     end
+
     context 'augmentation' do
     end
 end
