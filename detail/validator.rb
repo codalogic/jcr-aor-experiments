@@ -62,9 +62,10 @@ module ValidatorStatusMixin
     def status= s
         @status = s
     end
-    def ok?
+    def status
         @status
     end
+    alias ok? status
 end
 
 class Validator < Pattern
@@ -74,6 +75,9 @@ class Validator < Pattern
         augment_choices
     end
     def valid? instance
+        @instance = instance
+        validate_group self
+        ok?
     end
 
     private def adopt_pattern pattern
@@ -81,19 +85,16 @@ class Validator < Pattern
     end
 
     private def enhance g = self
-        g.each do |sub|
-            sub.extend ValidatorExclusionsMixin
-            sub.init_exclusions
-            sub.extend ValidatorStatusMixin
-            sub.init_status
-
-            case sub
-                when Member
-                    sub.extend ValidatorOccurrencesMixin
-                    sub.init_occurrences
-                when Group
-                    enhance sub
-            end
+        g.extend ValidatorStatusMixin
+        g.init_status
+        g.extend ValidatorExclusionsMixin
+        g.init_exclusions
+        case g
+            when Member
+                g.extend ValidatorOccurrencesMixin
+                g.init_occurrences
+            when Group
+                g.each { |sub| enhance sub }
         end
         g
     end
@@ -117,6 +118,37 @@ class Validator < Pattern
             each_member( sub ) { |m| every_child_member << m.c }
         end
         every_child_member
+    end
+
+    private def validate_group g
+        if not g.equal? self and has_instance_exclusions g
+            g.status = false
+        else
+            g.each do |sub|
+                case sub
+                    when Member
+                        validate_member sub
+                    when Group
+                        validate_group sub
+                end
+            end
+            g.status = g[0].ok?
+            if g.choice?
+                g.each { |sub| g.status ||= sub.ok? }
+            else
+                g.each { |sub| g.status &&= sub.ok? }
+            end
+        end
+    end
+
+    private def validate_member m
+        @instance.each_char { |i| m.inc_occurrences if m.matches? i }
+        m.status = m.min <= m.occurrences && ( m.nil? || m.occurrences <= m.max )
+    end
+
+    private def has_instance_exclusions sub
+        @instance.each_char { |i| return true if sub.excluded? i }
+        false
     end
 
     private def each_member g = self, &b

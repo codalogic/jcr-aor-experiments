@@ -164,4 +164,11 @@ describe 'Validator class' do
             expect( v[1][1][0].excluded? 'e' ).to eq( true )
         end
     end
+
+    context 'basic validation' do
+        it 'should say ab is valid in ab' do
+            v = Validator.new( Pattern.new 'ab' )
+            expect( v.valid? 'ab' ).to eq( true )
+        end
+    end
 end
