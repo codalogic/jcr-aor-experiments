@@ -124,6 +124,7 @@ class Validator < Pattern
         if not g.equal? self and has_instance_exclusions g
             g.status = false
         else
+            # separately validate each group member
             g.each do |sub|
                 case sub
                     when Member
@@ -132,12 +133,14 @@ class Validator < Pattern
                         validate_group sub
                 end
             end
+            # collate the results
             g.status = g[0].ok?
             if g.choice?
                 g.each { |sub| g.status ||= sub.ok? }
             else
                 g.each { |sub| g.status &&= sub.ok? }
             end
+            # an optional group with invalid membership can still be valid if all its specified members are absent
             if g.status == false && ! g.equal?( self ) && g.min == 0
                 g.status = true
                 each_member( g ) { |m| g.status = false if m.occurrences != 0 }
