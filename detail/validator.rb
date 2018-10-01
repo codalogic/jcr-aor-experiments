@@ -71,7 +71,7 @@ end
 class Validator < Pattern
     def initialize pattern
         adopt_pattern pattern
-        enhance
+        enhance_pattern_objects
         augment_choices
     end
     def valid? instance
@@ -84,7 +84,7 @@ class Validator < Pattern
         pattern.instance_variables.each { |v| instance_variable_set( v, pattern.instance_variable_get( v ).full_dup ) }
     end
 
-    private def enhance g = self
+    private def enhance_pattern_objects g = self
         g.extend ValidatorStatusMixin
         g.init_status
         g.extend ValidatorExclusionsMixin
@@ -94,7 +94,7 @@ class Validator < Pattern
                 g.extend ValidatorOccurrencesMixin
                 g.init_occurrences
             when Group
-                g.each { |sub| enhance sub }
+                g.each { |sub| enhance_pattern_objects sub }
         end
         g
     end
