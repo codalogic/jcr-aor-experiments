@@ -220,4 +220,19 @@ describe 'Validator class' do
             expect( v.valid? 'e' ).to eq( false )
         end
     end
+
+    context 'basic sequence with optional member validation' do
+        it 'should say ab is valid for pattern ab?' do
+            v = Validator.new( Pattern.new 'ab?' )
+            expect( v.valid? 'ab' ).to eq( true )
+        end
+        it 'should say a is valid for pattern ab?' do
+            v = Validator.new( Pattern.new 'ab?' )
+            expect( v.valid? 'a' ).to eq( true )
+        end
+        it 'should say ab is valid for pattern ab?' do
+            v = Validator.new( Pattern.new 'ab?' )
+            expect( v.valid? 'b' ).to eq( false )
+        end
+    end
 end
