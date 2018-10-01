@@ -242,4 +242,19 @@ describe 'Validator class' do
             expect( v.valid? 'b' ).to eq( false )
         end
     end
+
+    context 'basic choice with optional member validation' do
+        it 'should say a is valid for pattern a|b?' do
+            expect( validate 'a', 'a|b?' ).to eq( true )
+        end
+        it 'should say b is valid for pattern a|b?' do
+            expect( validate 'b', 'a|b?' ).to eq( true )
+        end
+        it 'should say <empty> is valid for pattern a|b?' do
+            expect( validate '', 'a|b?' ).to eq( true )
+        end
+        it 'should say ab is not valid for pattern a|b?' do
+            expect( validate 'ab', 'a|b?' ).to eq( false )
+        end
+    end
 end
