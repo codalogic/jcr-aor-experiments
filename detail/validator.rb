@@ -186,3 +186,7 @@ class Validator < Pattern
         g
     end
 end
+
+def validate instance,  pattern
+    Validator.new( Pattern.new pattern ).valid?( instance )
+end

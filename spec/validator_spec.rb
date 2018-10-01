@@ -27,8 +27,8 @@ require 'rspec'
 require_relative '../jcr_aor'
 
 describe 'Validator class' do
-    context 'basic behaviour' do
 
+    context 'basic behaviour' do
         it 'should be creatable' do
             v = Validator.new Pattern.new
         end
@@ -162,6 +162,13 @@ describe 'Validator class' do
         it 'should exclude e from member[1][1][0] in choice a|(b|(d|e))|c' do
             v = Validator.new( Pattern.new 'a|(b|(d|e))|c' )
             expect( v[1][1][0].excluded? 'e' ).to eq( true )
+        end
+    end
+
+    context 'simple validate function' do
+        it 'should allow simple instance vs pattern validating' do
+            expect( validate( 'a', 'a' ) ).to eq( true )
+            expect( validate( 'b', 'a' ) ).to eq( false )
         end
     end
 
