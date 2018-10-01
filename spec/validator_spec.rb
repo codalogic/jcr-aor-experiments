@@ -165,10 +165,18 @@ describe 'Validator class' do
         end
     end
 
-    context 'basic validation' do
-        it 'should say ab is valid in ab' do
+    context 'basic sequence validation' do
+        it 'should say ab is valid for pattern ab' do
             v = Validator.new( Pattern.new 'ab' )
             expect( v.valid? 'ab' ).to eq( true )
+        end
+        it 'should say abc (an extra token to be ignored) is valid for pattern ab' do
+            v = Validator.new( Pattern.new 'ab' )
+            expect( v.valid? 'abc' ).to eq( true )
+        end
+        it 'should say b (missing a token) is not valid for pattern ab' do
+            v = Validator.new( Pattern.new 'ab' )
+            expect( v.valid? 'b' ).to eq( false )
         end
     end
 end
