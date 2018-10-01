@@ -301,4 +301,19 @@ describe 'Validator class' do
             expect( validation_of( 'ab' ).against_pattern( 'a(bc)?' ) ).to eq( false )
         end
     end
+
+    context 'optional groups with optional members' do
+        it 'should say <empty> is valid for pattern (ab?)?' do
+            expect( validation_of( '' ).against_pattern( '(ab?)?' ) ).to eq( true )
+        end
+        it 'should say a is valid for pattern (ab?)?' do
+            expect( validation_of( 'a' ).against_pattern( '(ab?)?' ) ).to eq( true )
+        end
+        it 'should say ab is valid for pattern (ab?)?' do
+            expect( validation_of( 'ab' ).against_pattern( '(ab?)?' ) ).to eq( true )
+        end
+        it 'should say b is not valid for pattern (ab?)?' do
+            expect( validation_of( 'ab' ).against_pattern( '(ab?)?' ) ).to eq( true )
+        end
+    end
 end
