@@ -179,4 +179,19 @@ describe 'Validator class' do
             expect( v.valid? 'b' ).to eq( false )
         end
     end
+
+    context 'basic choice validation' do
+        it 'should say b is valid for pattern a|b' do
+            v = Validator.new( Pattern.new 'a|b' )
+            expect( v.valid? 'b' ).to eq( true )
+        end
+        it 'should say bc (an extra token to be ignored) is valid for pattern a|b' do
+            v = Validator.new( Pattern.new 'a|b' )
+            expect( v.valid? 'bc' ).to eq( true )
+        end
+        it 'should say ab is not valid for pattern a|b' do
+            v = Validator.new( Pattern.new 'a|b' )
+            expect( v.valid? 'ab' ).to eq( false )
+        end
+    end
 end

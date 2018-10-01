@@ -142,6 +142,9 @@ class Validator < Pattern
     end
 
     private def validate_member m
+        if ! m.exclusions.empty? && has_instance_exclusions( m )
+            return (m.status = false)
+        end
         @instance.each_char { |i| m.inc_occurrences if m.matches? i }
         m.status = m.min <= m.occurrences && ( m.nil? || m.occurrences <= m.max )
     end
