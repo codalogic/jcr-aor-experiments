@@ -201,4 +201,23 @@ describe 'Validator class' do
             expect( v.valid? 'abcd' ).to eq( true )
         end
     end
+
+    context 'basic group choice validation' do
+        it 'should say ab is valid for pattern (ab)|(cd)' do
+            v = Validator.new( Pattern.new '(ab)|(cd)' )
+            expect( v.valid? 'ab' ).to eq( true )
+        end
+        it 'should say abe (an extra token to be ignored) is valid for pattern (ab)|(cd)' do
+            v = Validator.new( Pattern.new '(ab)|(cd)' )
+            expect( v.valid? 'abe' ).to eq( true )
+        end
+        it 'should say abc is not valid for pattern (ab)|(cd)' do
+            v = Validator.new( Pattern.new '(ab)|(cd)' )
+            expect( v.valid? 'abc' ).to eq( false )
+        end
+        it 'should say e is not valid for pattern (ab)|(cd)' do
+            v = Validator.new( Pattern.new '(ab)|(cd)' )
+            expect( v.valid? 'e' ).to eq( false )
+        end
+    end
 end
