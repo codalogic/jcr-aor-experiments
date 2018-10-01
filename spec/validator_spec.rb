@@ -194,4 +194,11 @@ describe 'Validator class' do
             expect( v.valid? 'ab' ).to eq( false )
         end
     end
+
+    context 'basic group sequence validation' do
+        it 'should say abcd is valid for pattern (ab)(cd)' do
+            v = Validator.new( Pattern.new '(ab)(cd)' )
+            expect( v.valid? 'abcd' ).to eq( true )
+        end
+    end
 end
