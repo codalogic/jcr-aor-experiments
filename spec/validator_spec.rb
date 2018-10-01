@@ -289,4 +289,16 @@ describe 'Validator class' do
             expect( validation_of( 'abd' ).against_pattern( '(abd)|(c(d|e))' ) ).to eq( true )
         end
     end
+
+    context 'optional groups' do
+        it 'should say abc is valid for pattern a(bc)?' do
+            expect( validation_of( 'abc' ).against_pattern( 'a(bc)?' ) ).to eq( true )
+        end
+        it 'should say a is valid for pattern a(bc)?' do
+            expect( validation_of( 'a' ).against_pattern( 'a(bc)?' ) ).to eq( true )
+        end
+        it 'should say ab is not valid for pattern a(bc)?' do
+            expect( validation_of( 'ab' ).against_pattern( 'a(bc)?' ) ).to eq( false )
+        end
+    end
 end

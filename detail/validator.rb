@@ -138,6 +138,10 @@ class Validator < Pattern
             else
                 g.each { |sub| g.status &&= sub.ok? }
             end
+            if ! g.equal?( self ) && g.status == false && g.min == 0
+                g.status = true
+                each_member( g ) { |m| g.status = false if m.occurrences != 0 }
+            end
         end
     end
 
