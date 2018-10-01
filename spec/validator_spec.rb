@@ -174,80 +174,64 @@ describe 'Validator class' do
 
     context 'basic sequence validation' do
         it 'should say ab is valid for pattern ab' do
-            v = Validator.new( Pattern.new 'ab' )
-            expect( v.valid? 'ab' ).to eq( true )
+            expect( validation_of( 'ab' ).against_pattern( 'ab' ) ).to eq( true )
         end
         it 'should say abc (an extra token to be ignored) is valid for pattern ab' do
-            v = Validator.new( Pattern.new 'ab' )
-            expect( v.valid? 'abc' ).to eq( true )
+            expect( validation_of( 'abc' ).against_pattern( 'ab' ) ).to eq( true )
         end
         it 'should say b (missing a token) is not valid for pattern ab' do
-            v = Validator.new( Pattern.new 'ab' )
-            expect( v.valid? 'b' ).to eq( false )
+            expect( validation_of( 'b' ).against_pattern( 'ab' ) ).to eq( false )
         end
     end
 
     context 'basic choice validation' do
         it 'should say b is valid for pattern a|b' do
-            v = Validator.new( Pattern.new 'a|b' )
-            expect( v.valid? 'b' ).to eq( true )
+            expect( validation_of( 'b' ).against_pattern( 'a|b' ) ).to eq( true )
         end
         it 'should say bc (an extra token to be ignored) is valid for pattern a|b' do
-            v = Validator.new( Pattern.new 'a|b' )
-            expect( v.valid? 'bc' ).to eq( true )
+            expect( validation_of( 'bc' ).against_pattern( 'a|b' ) ).to eq( true )
         end
         it 'should say ab is not valid for pattern a|b' do
-            v = Validator.new( Pattern.new 'a|b' )
-            expect( v.valid? 'ab' ).to eq( false )
+            expect( validation_of( 'ab' ).against_pattern( 'a|b' ) ).to eq( false )
         end
     end
 
     context 'basic group sequence validation' do
         it 'should say abcd is valid for pattern (ab)(cd)' do
-            v = Validator.new( Pattern.new '(ab)(cd)' )
-            expect( v.valid? 'abcd' ).to eq( true )
+            expect( validation_of( 'abcd' ).against_pattern( '(ab)(cd)' ) ).to eq( true )
         end
     end
 
     context 'basic group choice validation' do
         it 'should say ab is valid for pattern (ab)|(cd)' do
-            v = Validator.new( Pattern.new '(ab)|(cd)' )
-            expect( v.valid? 'ab' ).to eq( true )
+            expect( validation_of( 'ab' ).against_pattern( '(ab)|(cd)' ) ).to eq( true )
         end
         it 'should say abe (an extra token to be ignored) is valid for pattern (ab)|(cd)' do
-            v = Validator.new( Pattern.new '(ab)|(cd)' )
-            expect( v.valid? 'abe' ).to eq( true )
+            expect( validation_of( 'abe' ).against_pattern( '(ab)|(cd)' ) ).to eq( true )
         end
         it 'should say abc is not valid for pattern (ab)|(cd)' do
-            v = Validator.new( Pattern.new '(ab)|(cd)' )
-            expect( v.valid? 'abc' ).to eq( false )
+            expect( validation_of( 'abc' ).against_pattern( '(ab)|(cd)' ) ).to eq( false )
         end
         it 'should say e is not valid for pattern (ab)|(cd)' do
-            v = Validator.new( Pattern.new '(ab)|(cd)' )
-            expect( v.valid? 'e' ).to eq( false )
+            expect( validation_of( 'e' ).against_pattern( '(ab)|(cd)' ) ).to eq( false )
         end
         it 'should say ef is valid for pattern (ab)|(cd)|(ef)' do
-            v = Validator.new( Pattern.new '(ab)|(cd)|(ef)' )
-            expect( v.valid? 'ef' ).to eq( true )
+            expect( validation_of( 'ef' ).against_pattern( '(ab)|(cd)|(ef)' ) ).to eq( true )
         end
         it 'should say aef is not valid for pattern (ab)|(cd)|(ef)' do
-            v = Validator.new( Pattern.new '(ab)|(cd)|(ef)' )
-            expect( v.valid? 'aef' ).to eq( false )
+            expect( validation_of( 'aef' ).against_pattern( '(ab)|(cd)|(ef)' ) ).to eq( false )
         end
     end
 
     context 'basic sequence with optional member validation' do
         it 'should say ab is valid for pattern ab?' do
-            v = Validator.new( Pattern.new 'ab?' )
-            expect( v.valid? 'ab' ).to eq( true )
+            expect( validation_of( 'ab' ).against_pattern( 'ab?' ) ).to eq( true )
         end
         it 'should say a is valid for pattern ab?' do
-            v = Validator.new( Pattern.new 'ab?' )
-            expect( v.valid? 'a' ).to eq( true )
+            expect( validation_of( 'a' ).against_pattern( 'ab?' ) ).to eq( true )
         end
         it 'should say ab is valid for pattern ab?' do
-            v = Validator.new( Pattern.new 'ab?' )
-            expect( v.valid? 'b' ).to eq( false )
+            expect( validation_of( 'b' ).against_pattern( 'ab?' ) ).to eq( false )
         end
     end
 
@@ -313,7 +297,7 @@ describe 'Validator class' do
             expect( validation_of( 'ab' ).against_pattern( '(ab?)?' ) ).to eq( true )
         end
         it 'should say b is not valid for pattern (ab?)?' do
-            expect( validation_of( 'ab' ).against_pattern( '(ab?)?' ) ).to eq( true )
+            expect( validation_of( 'b' ).against_pattern( '(ab?)?' ) ).to eq( false )
         end
     end
 end
