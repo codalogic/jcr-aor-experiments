@@ -300,4 +300,13 @@ describe 'Validator class' do
             expect( validation_of( 'b' ).against_pattern( '(ab?)?' ) ).to eq( false )
         end
     end
+
+    context 'multiple instance members' do
+        it 'should say aa is valid for pattern a2' do
+            expect( validation_of( 'aa' ).against_pattern( 'a2' ) ).to eq( true )
+        end
+        it 'should say aaa is not valid for pattern a2' do
+            expect( validation_of( 'aaa' ).against_pattern( 'a2' ) ).to eq( false )
+        end
+    end
 end
