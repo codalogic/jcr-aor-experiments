@@ -265,4 +265,28 @@ describe 'Validator class' do
             expect( validation_of( 'ab' ).against_pattern( 'a|b?' ) ).to eq( false )
         end
     end
+
+    context 'choice group nested in choice validation' do
+        it 'should say cd is valid for pattern (ab)|(c(d|e))' do
+            expect( validation_of( 'cd' ).against_pattern( '(ab)|(c(d|e))' ) ).to eq( true )
+        end
+        it 'should say ce is valid for pattern (ab)|(c(d|e))' do
+            expect( validation_of( 'ce' ).against_pattern( '(ab)|(c(d|e))' ) ).to eq( true )
+        end
+        it 'should say ced is not valid for pattern (ab)|(c(d|e))' do
+            expect( validation_of( 'ced' ).against_pattern( '(ab)|(c(d|e))' ) ).to eq( false )
+        end
+        it 'should say ace is not valid for pattern (ab)|(c(d|e))' do
+            expect( validation_of( 'ace' ).against_pattern( '(ab)|(c(d|e))' ) ).to eq( false )
+        end
+        it 'should say ab is valid for pattern (ab)|(c(d|e))' do
+            expect( validation_of( 'ab' ).against_pattern( '(ab)|(c(d|e))' ) ).to eq( true )
+        end
+        it 'should say abd is not valid for pattern (ab)|(c(d|e))' do
+            expect( validation_of( 'abd' ).against_pattern( '(ab)|(c(d|e))' ) ).to eq( false )
+        end
+        it 'should say abd is valid for pattern (abd)|(c(d|e))' do
+            expect( validation_of( 'abd' ).against_pattern( '(abd)|(c(d|e))' ) ).to eq( true )
+        end
+    end
 end
