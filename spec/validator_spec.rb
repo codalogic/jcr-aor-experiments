@@ -226,6 +226,14 @@ describe 'Validator class' do
             v = Validator.new( Pattern.new '(ab)|(cd)' )
             expect( v.valid? 'e' ).to eq( false )
         end
+        it 'should say ef is valid for pattern (ab)|(cd)|(ef)' do
+            v = Validator.new( Pattern.new '(ab)|(cd)|(ef)' )
+            expect( v.valid? 'ef' ).to eq( true )
+        end
+        it 'should say aef is not valid for pattern (ab)|(cd)|(ef)' do
+            v = Validator.new( Pattern.new '(ab)|(cd)|(ef)' )
+            expect( v.valid? 'aef' ).to eq( false )
+        end
     end
 
     context 'basic sequence with optional member validation' do
