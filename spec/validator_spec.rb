@@ -167,8 +167,8 @@ describe 'Validator class' do
 
     context 'simple validate function' do
         it 'should allow simple instance vs pattern validating' do
-            expect( validate( 'a', 'a' ) ).to eq( true )
-            expect( validate( 'b', 'a' ) ).to eq( false )
+            expect( validation_of( 'a' ).against_pattern( 'a' ) ).to eq( true )
+            expect( validation_of( 'b' ).against_pattern( 'a' ) ).to eq( false )
         end
     end
 
@@ -245,16 +245,16 @@ describe 'Validator class' do
 
     context 'basic choice with optional member validation' do
         it 'should say a is valid for pattern a|b?' do
-            expect( validate 'a', 'a|b?' ).to eq( true )
+            expect( validation_of( 'a' ).against_pattern( 'a|b?' ) ).to eq( true )
         end
         it 'should say b is valid for pattern a|b?' do
-            expect( validate 'b', 'a|b?' ).to eq( true )
+            expect( validation_of( 'b' ).against_pattern( 'a|b?' ) ).to eq( true )
         end
         it 'should say <empty> is valid for pattern a|b?' do
-            expect( validate '', 'a|b?' ).to eq( true )
+            expect( validation_of( '' ).against_pattern( 'a|b?' ) ).to eq( true )
         end
         it 'should say ab is not valid for pattern a|b?' do
-            expect( validate 'ab', 'a|b?' ).to eq( false )
+            expect( validation_of( 'ab' ).against_pattern( 'a|b?' ) ).to eq( false )
         end
     end
 end

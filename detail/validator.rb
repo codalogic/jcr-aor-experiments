@@ -187,6 +187,15 @@ class Validator < Pattern
     end
 end
 
-def validate instance,  pattern
-    Validator.new( Pattern.new pattern ).valid?( instance )
+class SimpleValidatorIntermediateStage
+    def initialize instance
+        @instance = instance
+    end
+    def against_pattern pattern
+        Validator.new( Pattern.new pattern ).valid?( @instance )
+    end
+end
+
+def validation_of instance
+    SimpleValidatorIntermediateStage.new instance
 end
