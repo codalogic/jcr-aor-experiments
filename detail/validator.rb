@@ -23,7 +23,6 @@
 # For info see https://github.com/codalogic/jcr-aor-experiments
 
 require_relative 'pattern'
-require_relative 'instance'
 
 require 'full_dup'
 require 'set'
@@ -75,7 +74,7 @@ class Validator < Pattern
         augment_choices
     end
     def valid? instance
-        @instance = instance
+        @instance = instance.strip.gsub /[^a-z]/, ''
         validate_group self
         ok?
     end

@@ -24,6 +24,8 @@
 
 require 'rspec'
 
+require_relative '../jcr_aor'
+
 describe 'PatternTokeniser class' do
 
     PT = PatternTokeniser
