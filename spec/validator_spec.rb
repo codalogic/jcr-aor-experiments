@@ -71,7 +71,7 @@ describe 'Validator class' do
         end
         it 'should have status methods for a member' do
             v = Validator.new( Pattern.new 'abc' )
-            expect( v[0].ok? ).to eq( false )
+            expect( v[0].ok? ).to eq( nil )
         end
         it 'should have status setting methods for a member' do
             v = Validator.new( Pattern.new 'abc' )
