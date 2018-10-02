@@ -2,9 +2,33 @@
 
 Experiments on how to implement object validation in JSON Content Rules (JCR).
 
-jcr-aor.rb is the main code.
+jcr_aor.rb is the main code.
 
-jcr-aor*.txt files contain the test input and have the following input:
+jcr_aor.rb can take inputs from the command line or, if no command line
+arguments are given, by globbing files named `jcr_aor*.txt` in the current
+directory.
+
+For the command line, the format is:
+
+```
+jcr_aor.rb <instance> <pattern>
+```
+
+e.g.
+
+```
+jcr_aor.rb "abd" "a(b|c)d"
+```
+
+The `instance` is merely a string of alphabetic characters.
+
+See below for the syntax of the `pattern`s.
+
+jcr_aor.rb will report if the instance is considered valid or not against the
+pattern.
+
+Fr the file globbing form, the jcr_aor*.txt files contain the test input and
+have the following input:
 
 `#` starts a comment line,
 
