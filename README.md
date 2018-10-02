@@ -1,6 +1,7 @@
 # jcr-aor-experiments
 
-Experiments on how to implement object validation in JSON Content Rules (JCR).
+Experiments on how to implement object validation in JSON Content Rules (JCR)
+using "Augmented OR (AOR)".
 
 jcr_aor.rb is the main code.
 
