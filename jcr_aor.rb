@@ -36,10 +36,13 @@ def process_file fname
     File.foreach( fname ) { |line| process_line line_num, line; line_num += 1 }
 end
 
-def process_line line
+def process_line line_num, line
+    line.strip!
     case line[0]
         when '?'
-            parse_pattern line[1..-1]
+            puts "        #{line[1..-1]} pattern on line: #{line_num}"
+            puts "        -------------------------------------------"
+            parse_pattern line_num, line[1..-1]
         when '+'
             test_valid_instance line[1..-1]
         when '-'
@@ -48,13 +51,24 @@ def process_line line
 end
 
 def test_valid_instance line
-    instance = Instance.new line
-    puts instance[1]
-    # TODO
+    puts status_indicator( test_instance( line ) ) + line + " - expected valid"
 end
 
 def test_invalid_instance line
-    # TODO
+    puts status_indicator( ! test_instance( line ) ) + line + " - expected invalid"
+end
+
+def test_instance line
+    if not $pattern.nil?
+        return Validator.new( $pattern ).valid?( line )
+    else
+        puts "not ok: No pattern for #{line}"
+        return false
+    end
+end
+
+def status_indicator result
+    result ? "    ok: " : "not ok: "
 end
 
 main if __FILE__ == $PROGRAM_NAME

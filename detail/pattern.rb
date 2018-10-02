@@ -140,5 +140,6 @@ def parse_pattern line_num, line
 
     rescue StandardError => e
         puts "Error (line #{line_num}): #{e.message}"
+        $pattern = nil
     end
 end
