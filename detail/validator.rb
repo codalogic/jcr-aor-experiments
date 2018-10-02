@@ -126,7 +126,7 @@ class Validator < Pattern
         else
             # validate sub groups
             each_local_sub_group( g ) { |sub| validate_group sub }
-            #validate members
+            # validate members
             validate_members__disregard_exclusions g
             validate_members__tally_instance_repetitions g
             validate_members__set_statuses_based_on_tallies g
@@ -185,7 +185,7 @@ class Validator < Pattern
         g
     end
 
-    private def each_local_member g = self, &b
+    private def each_local_member g = self
         g.each do |sub|
             case sub
                 when Member
@@ -195,7 +195,7 @@ class Validator < Pattern
         g
     end
 
-    private def each_local_sub_group g = self, &b
+    private def each_local_sub_group g = self
         g.each do |sub|
             case sub
                 when Group
