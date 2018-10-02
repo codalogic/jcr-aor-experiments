@@ -28,7 +28,22 @@ require_relative 'detail/validator'
 $pattern = nil
 
 def main
-    Dir.glob( 'jcr_aor*.txt' ) { |fname| process_file fname }
+    if ARGV.size == 2
+        test_command_line_pattern ARGV[0], ARGV[1]
+    else
+        Dir.glob( 'jcr_aor*.txt' ) { |fname| process_file fname }
+    end
+end
+
+def test_command_line_pattern instance, pattern_string
+    begin
+        pattern = Pattern.new pattern_string
+    rescue StandardError => e
+        puts "Error parsing pattern: #{e.message}"
+        return
+    end
+    result = Validator.new( pattern ).valid?( instance )
+    puts "Instance: #{instance}, Pattern: #{pattern_string}\n#{result ? 'valid' : 'invalid'}"
 end
 
 def process_file fname
