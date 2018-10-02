@@ -323,4 +323,10 @@ describe 'Validator class' do
             expect( validation_of( 'zd' ).against_pattern( '((ab)|c)d' ) ).to eq( false )
         end
     end
+
+    context 'shadowing' do
+        it 'should say a pattern with a shadowed member is always invalid' do
+            expect( validation_of( 'b' ).against_pattern( '.b' ) ).to eq( false )
+        end
+    end
 end
