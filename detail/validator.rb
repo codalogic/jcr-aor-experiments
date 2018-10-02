@@ -57,7 +57,7 @@ end
 
 module ValidatorStatusMixin
     def init_status
-        @status = false
+        @status = nil
     end
     def status= s
         @status = s
@@ -124,15 +124,12 @@ class Validator < Pattern
         if not g.equal? self and has_instance_exclusions g
             g.status = false
         else
-            # separately validate each group member
-            g.each do |sub|
-                case sub
-                    when Member
-                        validate_member sub
-                    when Group
-                        validate_group sub
-                end
-            end
+            # validate sub groups
+            each_local_sub_group( g ) { |sub| validate_group sub }
+            #validate members
+            validate_members__disregard_exclusions g
+            validate_members__tally_instance_repetitions g
+            validate_members__set_statuses_based_on_tallies g
             # collate the results
             g.status = g[0].ok?
             if g.choice?
@@ -148,12 +145,27 @@ class Validator < Pattern
         end
     end
 
-    private def validate_member m
-        if ! m.exclusions.empty? && has_instance_exclusions( m )
-            return (m.status = false)
+    private def validate_members__disregard_exclusions g
+        each_local_member( g ) { |sub| sub.status = false if has_instance_exclusions( sub ) }
+    end
+
+    private def validate_members__tally_instance_repetitions g
+        @instance.each_char do |i|
+            each_local_member( g ) do |sub|
+                if sub.status.nil? && sub.matches?( i )
+                    sub.inc_occurrences
+                    break
+                end
+            end
         end
-        @instance.each_char { |i| m.inc_occurrences if m.matches? i }
-        m.status = m.min <= m.occurrences && ( m.nil? || m.occurrences <= m.max )
+    end
+
+    private def validate_members__set_statuses_based_on_tallies g
+        each_local_member( g ) do |sub|
+            if sub.status.nil?
+                sub.status = sub.min <= sub.occurrences && ( sub.nil? || sub.occurrences <= sub.max )
+            end
+        end
     end
 
     private def has_instance_exclusions sub

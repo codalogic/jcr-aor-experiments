@@ -71,7 +71,7 @@ describe 'Validator class' do
         end
         it 'should have status methods for a member' do
             v = Validator.new( Pattern.new 'abc' )
-            expect( v[0].ok? ).to eq( false )
+            expect( v[0].ok? ).to eq( nil )
         end
         it 'should have status setting methods for a member' do
             v = Validator.new( Pattern.new 'abc' )
@@ -321,6 +321,12 @@ describe 'Validator class' do
     
         it 'should fail object with complex nested groups 1' do
             expect( validation_of( 'zd' ).against_pattern( '((ab)|c)d' ) ).to eq( false )
+        end
+    end
+
+    context 'shadowing' do
+        it 'should say a pattern with a shadowed member is always invalid' do
+            expect( validation_of( 'b' ).against_pattern( '.b' ) ).to eq( false )
         end
     end
 end
