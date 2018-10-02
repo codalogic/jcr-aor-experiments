@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # MIT Licensed:
 #
 # Copyright (c) 2018, Codalogic Ltd (http://www.codalogic.com)
