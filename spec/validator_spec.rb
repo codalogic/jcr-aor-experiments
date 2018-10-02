@@ -309,4 +309,18 @@ describe 'Validator class' do
             expect( validation_of( 'aaa' ).against_pattern( 'a2' ) ).to eq( false )
         end
     end
+
+    context 'from JCR validator tests' do
+        it 'should pass object with complex nested groups 1' do
+            expect( validation_of( 'abd' ).against_pattern( '((ab)|c)d' ) ).to eq( true )
+        end
+    
+        it 'should pass object with complex nested groups 2' do
+            expect( validation_of( 'cd' ).against_pattern( '((ab)|c)d' ) ).to eq( true )
+        end
+    
+        it 'should fail object with complex nested groups 1' do
+            expect( validation_of( 'zd' ).against_pattern( '((ab)|c)d' ) ).to eq( false )
+        end
+    end
 end
