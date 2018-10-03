@@ -151,7 +151,7 @@ class Validator < Pattern
     private def validate_members__tally_instance_repetitions g
         @instance.each_char do |i|
             each_local_member( g ) do |sub|
-                if sub.status.nil? && sub.matches?( i )
+                if sub.matches?( i )    # Tally even if member to be discarded due to exclusions
                     sub.inc_occurrences
                     break
                 end
@@ -162,7 +162,7 @@ class Validator < Pattern
     private def validate_members__set_statuses_based_on_tallies g
         each_local_member( g ) do |sub|
             if sub.status.nil?
-                sub.status = sub.min <= sub.occurrences && ( sub.nil? || sub.occurrences <= sub.max )
+                sub.status = sub.min <= sub.occurrences && ( sub.max.nil? || sub.occurrences <= sub.max )
             end
         end
     end

@@ -192,4 +192,22 @@ describe 'Validator class' do
             expect( validation_of( 'b' ).against_pattern( '.b' ) ).to eq( false )
         end
     end
+
+    context '* item in optional choice' do
+        it 'should say a is valid for pattern a+(b*|c)?' do
+            expect( validation_of( 'a' ).against_pattern( 'a+(b*|c)?' ) ).to eq( true )
+        end
+        it 'should say ab is valid for pattern a+(b*|c)?' do
+            expect( validation_of( 'ab' ).against_pattern( 'a+(b*|c)?' ) ).to eq( true )
+        end
+        it 'should say aabb is valid for pattern a+(b*|c)?' do
+            expect( validation_of( 'aabb' ).against_pattern( 'a+(b*|c)?' ) ).to eq( true )
+        end
+        it 'should say aac is valid for pattern a+(b*|c)?' do
+            expect( validation_of( 'aac' ).against_pattern( 'a+(b*|c)?' ) ).to eq( true )
+        end
+        it 'should say abc is valid for pattern a+(b*|c)?' do
+            expect( validation_of( 'abc' ).against_pattern( 'a+(b*|c)?' ) ).to eq( false )
+        end
+    end
 end
