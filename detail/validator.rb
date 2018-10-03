@@ -126,7 +126,7 @@ class Validator < Pattern
             # validate sub groups
             each_local_sub_group( g ) { |sub| validate_group sub }
             # validate members
-            validate_members__disregard_exclusions g
+            validate_members__reject_due_to_exclusions g
             validate_members__tally_instance_repetitions g
             validate_members__set_statuses_based_on_tallies g
             # collate the results
@@ -144,7 +144,7 @@ class Validator < Pattern
         end
     end
 
-    private def validate_members__disregard_exclusions g
+    private def validate_members__reject_due_to_exclusions g
         each_local_member( g ) { |sub| sub.status = false if has_instance_exclusions( sub ) }
     end
 
