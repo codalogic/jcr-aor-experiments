@@ -48,6 +48,7 @@ def test_command_line_pattern instance, pattern_string
 end
 
 def process_file fname
+    puts "\nProcessing file: #{fname}\n-----------------------------"
     line_num = 1
     File.foreach( fname ) { |line| process_line line_num, line; line_num += 1 }
 end
