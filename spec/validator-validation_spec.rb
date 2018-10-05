@@ -210,4 +210,20 @@ describe 'Validator class' do
             expect( validation_of( 'abc' ).against_pattern( 'a+(b*|c)?' ) ).to eq( false )
         end
     end
+
+    # Still need a solution to tackling this type of pattern
+    context 'closed objects' do
+        it 'should say ab is valid for the closed object pattern a(b).0' do
+            # Pre-check that the open form of the test is OK
+            expect( validation_of( 'ab' ).against_pattern( 'a(b)' ) ).to eq( true )
+            # Do the real test on the closed form
+            expect( validation_of( 'ab' ).against_pattern( 'a(b).0' ) ).to eq( true )
+        end
+        it 'should say ab is valid for the closed object pattern (a((b.0)|(cd)))' do
+            # Pre-check that the open form of the test is OK
+            expect( validation_of( 'ab' ).against_pattern( '(a((b)|(cd)))' ) ).to eq( true )
+            # Do the real test on the closed form
+            expect( validation_of( 'ab' ).against_pattern( '(a((b.0)|(cd)))' ) ).to eq( true )
+        end
+    end
 end
