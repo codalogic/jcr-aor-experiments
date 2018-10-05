@@ -212,14 +212,18 @@ describe 'Validator class' do
     end
 
     # Still need a solution to tackling this type of pattern
+    # To hide the output of these tests, run rspec as:
+    #
+    #    rspec --tag ~known_issue
+    #
     context 'closed objects' do
-        it 'should say ab is valid for the closed object pattern a(b).0' do
+        it 'should say ab is valid for the closed object pattern a(b).0', :known_issue do
             # Pre-check that the open form of the test is OK
             expect( validation_of( 'ab' ).against_pattern( 'a(b)' ) ).to eq( true )
             # Do the real test on the closed form
             expect( validation_of( 'ab' ).against_pattern( 'a(b).0' ) ).to eq( true )
         end
-        it 'should say ab is valid for the closed object pattern (a((b.0)|(cd)))' do
+        it 'should say ab is valid for the closed object pattern (a((b.0)|(cd)))', :known_issue do
             # Pre-check that the open form of the test is OK
             expect( validation_of( 'ab' ).against_pattern( '(a((b)|(cd)))' ) ).to eq( true )
             # Do the real test on the closed form
