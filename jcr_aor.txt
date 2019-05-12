@@ -2,3 +2,7 @@
 ?abcd
 +dcba
 -abc
+?a|b
++a
++b
++ac
