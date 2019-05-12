@@ -103,7 +103,8 @@ class Validator < Pattern
             all_group_members = all_member_names g
             g.each do |sub|
                 all_sub_members = all_member_names sub
-                sub.exclusions = all_group_members - all_sub_members
+                sub.exclusions = (all_group_members - all_sub_members)
+                # DEBUG puts "augmentation:", all_group_members.to_a.to_s, all_sub_members.to_a.to_s, sub.exclusions.to_a.to_s
             end
         end
         each_local_sub_group( g ) { |sub| augment_choices sub }
@@ -112,11 +113,18 @@ class Validator < Pattern
     private def all_member_names sub = self
         every_child_member = Set.new
         if sub.instance_of? Member
-            every_child_member << sub.c
+            every_child_member << sub.c if( takes_part_in_augmentation sub )
         else
-            each_member( sub ) { |m| every_child_member << m.c }
+            each_member( sub ) { |m| every_child_member << m.c if( takes_part_in_augmentation m ) }
         end
         every_child_member
+    end
+    
+    private def takes_part_in_augmentation m
+        # Members marked as not being permitted on one side of a choice
+        # do not become excluded on the other branches of the choice during
+        # augmentation
+        return ! (m.min == 0 && m.max == 0)
     end
 
     private def validate_group g
