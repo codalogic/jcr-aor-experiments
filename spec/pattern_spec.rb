@@ -66,8 +66,13 @@ describe 'Pattern class' do
         end
 
         it 'should not have rep= method' do
-            p = Pattern.new
-            expect { p.rep = PatternTokeniser::Rep.new '?' }.to raise_error( NoMethodError )
+        end
+    end
+
+    context 'read back pattern' do
+        it 'should allow a the input pattern to be read back' do
+            p = Pattern.new 'ab?c0'
+            expect( p.pattern ).to eq( 'ab?c0' )
         end
     end
 
@@ -239,10 +244,10 @@ describe 'Member class' do
             expect( m.matches?( 'b' ) ).to be( false )
         end
 
-        it 'should have a matches? method that returns true for all given characters when matching the wildcard' do
+        it 'should have a matches? method that returns true for input characters marked as <unknown> for the wildcard' do
             m = Member.new '.'
-            expect( m.matches?( 'a' ) ).to be( true )
-            expect( m.matches?( 'b' ) ).to be( true )
+            expect( m.matches?( '.' ) ).to be( true )
+            expect( m.matches?( 'a' ) ).to be( false )
         end
 
     end

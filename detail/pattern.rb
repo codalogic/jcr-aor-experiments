@@ -42,7 +42,7 @@ class Member < Subordinate
         @c = c
     end
     def matches? c
-        return @c == "." || c == @c
+        return c == @c # includes case where c == '.'
     end
 end
 
@@ -103,6 +103,10 @@ class Pattern < Group
         @pt = PatternTokeniser.new line
         parse_group self
         freeze
+    end
+    
+    def pattern
+        @line
     end
 
     private def parse_group g

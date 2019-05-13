@@ -69,12 +69,15 @@ end
 
 class Validator < Pattern
     def initialize pattern
+        @pattern = pattern
         adopt_pattern pattern
         enhance_pattern_objects
         augment_choices
     end
     def valid? instance
         @instance = instance.strip.gsub /[^a-z]/, ''
+        @instance = member_association @instance
+
         validate_group self
         ok?
     end
@@ -124,6 +127,12 @@ class Validator < Pattern
         # do not become excluded on the other branches of the choice during
         # augmentation
         return ! (m.min == 0 && m.max == 0)
+    end
+
+    private def member_association instance
+        associated = ''
+        instance.each_char { |c| associated += (@pattern.pattern.include? c) ? c : '.' }
+        associated
     end
 
     private def validate_group g
