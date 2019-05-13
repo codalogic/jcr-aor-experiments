@@ -211,13 +211,17 @@ describe 'Validator class' do
         end
     end
 
-    context 'closed objects' do
+    context 'closed objects a(b).0' do
         it 'should say ab is valid for the closed object pattern a(b).0' do
             # Pre-check that the open form of the test is OK
             expect( validation_of( 'ab' ).against_pattern( 'a(b)' ) ).to eq( true )
             # Do the real test on the closed form
             expect( validation_of( 'ab' ).against_pattern( 'a(b).0' ) ).to eq( true )
         end
+    end
+
+    context 'closed objects (a((b.0)|(cd)))' do
+
         it 'should say ab is valid for the closed object pattern (a((b.0)|(cd)))' do
             # Pre-check that the open form of the test is OK
             expect( validation_of( 'ab' ).against_pattern( '(a((b)|(cd)))' ) ).to eq( true )
@@ -229,6 +233,47 @@ describe 'Validator class' do
         end
         it 'should say acdf is valid for the closed object pattern (a((b.0)|(cd)))' do
             expect( validation_of( 'acdf' ).against_pattern( '(a((b.0)|(cd)))' ) ).to eq( true )
+        end
+
+    end
+
+    context 'closed objects a(b|c).0' do
+        it 'should say ab is valid for the closed object pattern a(b|c).0' do
+            expect( validation_of( 'ab' ).against_pattern( 'a(b|c).0' ) ).to eq( true )
+        end
+        it 'should say abf is invalid for the closed object pattern a(b|c).0' do
+            expect( validation_of( 'abf' ).against_pattern( 'a(b|c).0' ) ).to eq( false )
+        end
+
+    end
+
+    context 'closed objects (a.0)|(bc)' do
+        it 'should say a is valid for the closed object pattern (a.0)|(bc)' do
+            expect( validation_of( 'a' ).against_pattern( '(a.0)|(bc)' ) ).to eq( true )
+        end
+        it 'should say bc is valid for the closed object pattern (a.0)|(bc)' do
+            expect( validation_of( 'bc' ).against_pattern( '(a.0)|(bc)' ) ).to eq( true )
+        end
+        it 'should say af is valid for the closed object pattern (a.0)|(bc)' do
+            expect( validation_of( 'af' ).against_pattern( '(a.0)|(bc)' ) ).to eq( false )
+        end
+        it 'should say bcf is valid for the closed object pattern (a.0)|(bc)' do
+            expect( validation_of( 'bcf' ).against_pattern( '(a.0)|(bc)' ) ).to eq( true )
+        end
+    end
+
+    context 'closed objects (d((a.0)|(bc))e)' do
+        it 'should say a is valid for the closed object pattern (d((a.0)|(bc))e)' do
+            expect( validation_of( 'dae' ).against_pattern( '(d((a.0)|(bc))e)' ) ).to eq( true )
+        end
+        it 'should say a is valid for the closed object pattern (d((a.0)|(bc))e)' do
+            expect( validation_of( 'dbce' ).against_pattern( '(d((a.0)|(bc))e)' ) ).to eq( true )
+        end
+        it 'should say a is valid for the closed object pattern (d((a.0)|(bc))e)' do
+            expect( validation_of( 'daef' ).against_pattern( '(d((a.0)|(bc))e)' ) ).to eq( false )
+        end
+        it 'should say a is valid for the closed object pattern (d((a.0)|(bc))e)' do
+            expect( validation_of( 'dbcef' ).against_pattern( '(d((a.0)|(bc))e)' ) ).to eq( true )
         end
     end
 end
