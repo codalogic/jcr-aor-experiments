@@ -98,7 +98,7 @@ class Pattern < Group
         end
     end
 
-    private def parse_pattern line
+    def parse_pattern line
         @line = line
         @pt = PatternTokeniser.new line
         parse_group self
