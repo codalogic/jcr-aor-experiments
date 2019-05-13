@@ -100,17 +100,16 @@ class Validator < Pattern
 
     private def augment_choices g = self
         if g.choice?
-            all_group_members = all_member_names g
+            all_group_members = all_augmentation_member_names g
             g.each do |sub|
-                all_sub_members = all_member_names sub
+                all_sub_members = all_augmentation_member_names sub
                 sub.exclusions = (all_group_members - all_sub_members)
-                # DEBUG puts "augmentation:", all_group_members.to_a.to_s, all_sub_members.to_a.to_s, sub.exclusions.to_a.to_s
             end
         end
         each_local_sub_group( g ) { |sub| augment_choices sub }
     end
 
-    private def all_member_names sub = self
+    private def all_augmentation_member_names sub = self
         every_child_member = Set.new
         if sub.instance_of? Member
             every_child_member << sub.c if( takes_part_in_augmentation sub )
